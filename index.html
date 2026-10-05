@@ -1,0 +1,4813 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+
+<title>Berinzo AI</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Tahoma,Arial,sans-serif;
+}
+
+:root{
+    --bg:#070910;
+    --panel:#0d111b;
+    --panel2:#121827;
+    --border:#252d40;
+    --text:#f4f7ff;
+    --muted:#8994a8;
+    --purple:#7658ff;
+    --cyan:#27d9ff;
+    --danger:#ff416c;
+    --green:#35e6a1;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg);
+    color:var(--text);
+}
+
+body{
+    position:fixed;
+    inset:0;
+}
+
+button,
+textarea,
+input{
+    font-family:inherit;
+}
+
+/* =====================================================
+APP
+===================================================== */
+
+.app{
+    width:100%;
+    height:100%;
+    height:100dvh;
+    display:flex;
+    overflow:hidden;
+}
+
+/* =====================================================
+SIDEBAR
+===================================================== */
+
+.sidebar{
+    width:300px;
+    height:100%;
+    flex-shrink:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0d111b,
+            #090c14
+        );
+
+    border-left:1px solid var(--border);
+
+    display:flex;
+    flex-direction:column;
+
+    z-index:100;
+
+    transition:
+        transform .28s ease;
+}
+
+.logoArea{
+    height:75px;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+    padding:15px;
+
+    border-bottom:1px solid var(--border);
+}
+
+.logo{
+    width:44px;
+    height:44px;
+
+    flex-shrink:0;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--cyan)
+        );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    box-shadow:
+        0 0 25px #7658ff55;
+}
+
+.logo svg{
+    width:27px;
+    fill:white;
+}
+
+.logoText{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.logoSub{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+/* =====================================================
+NEW CHAT
+===================================================== */
+
+.newChat{
+    width:calc(100% - 24px);
+
+    margin:12px;
+
+    flex-shrink:0;
+
+    padding:12px;
+
+    border:0;
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            #5238dc
+        );
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 5px 20px #7658ff25;
+}
+
+/* =====================================================
+TABS
+===================================================== */
+
+.tabs{
+    display:flex;
+
+    gap:7px;
+
+    padding:
+        0
+        12px
+        10px;
+
+    flex-shrink:0;
+}
+
+.tab{
+    flex:1;
+
+    padding:10px 6px;
+
+    background:#0c111b;
+
+    border:1px solid var(--border);
+
+    color:var(--muted);
+
+    border-radius:11px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.tab:hover{
+    color:white;
+}
+
+.tab.active{
+    color:white;
+
+    background:#191f31;
+
+    border-color:
+        #7658ff88;
+}
+
+/* =====================================================
+SIDEBAR CONTENT
+===================================================== */
+
+.sidebarContent{
+    flex:1;
+
+    min-height:0;
+
+    overflow:hidden;
+}
+
+.tabContent{
+    width:100%;
+    height:100%;
+
+    overflow-y:auto;
+
+    padding:
+        5px
+        10px
+        15px;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.sectionTitle{
+    color:var(--muted);
+
+    font-size:11px;
+
+    padding:
+        10px
+        7px
+        6px;
+}
+
+/* =====================================================
+CHAT ITEM
+===================================================== */
+
+.item{
+    position:relative;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    margin-bottom:6px;
+
+    cursor:pointer;
+
+    border:1px solid transparent;
+
+    min-height:58px;
+}
+
+.item:hover{
+    background:#131a29;
+}
+
+.item.active{
+    background:#171d2d;
+
+    border-color:
+        #7658ff66;
+}
+
+.itemTitle{
+    font-size:14px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    padding-left:82px;
+}
+
+.itemDate{
+    color:var(--muted);
+
+    font-size:10px;
+
+    margin-top:5px;
+}
+
+.pinMark{
+    position:absolute;
+
+    left:9px;
+    top:13px;
+
+    width:17px;
+    height:17px;
+
+    fill:#ffd85a;
+}
+
+.itemTools{
+    position:absolute;
+
+    left:7px;
+    bottom:7px;
+
+    display:flex;
+
+    gap:4px;
+
+    opacity:0;
+
+    transition:.2s;
+}
+
+.item:hover .itemTools{
+    opacity:1;
+}
+
+.iconBtn{
+    width:27px;
+    height:27px;
+
+    border-radius:7px;
+
+    border:1px solid var(--border);
+
+    background:#080c14;
+
+    color:#9ba6bb;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+}
+
+.iconBtn:hover{
+    color:white;
+
+    border-color:
+        var(--purple);
+}
+
+.iconBtn.delete:hover{
+    color:var(--danger);
+
+    border-color:
+        var(--danger);
+}
+
+.iconBtn svg{
+    width:15px;
+    height:15px;
+
+    fill:none;
+
+    stroke:currentColor;
+
+    stroke-width:2;
+}
+
+/* =====================================================
+PROJECT
+===================================================== */
+
+.projectCreateBtn{
+    width:100%;
+
+    padding:11px;
+
+    border:1px solid #7658ff66;
+
+    background:#141a2a;
+
+    color:white;
+
+    border-radius:11px;
+
+    cursor:pointer;
+
+    margin-bottom:10px;
+}
+
+.projectCreateBtn:hover{
+    background:#1b2235;
+}
+
+.projectCard{
+    background:#101622;
+
+    border:1px solid var(--border);
+
+    border-radius:13px;
+
+    padding:12px;
+
+    margin-bottom:8px;
+}
+
+.projectCard:hover{
+    border-color:
+        #7658ff66;
+}
+
+.projectName{
+    font-size:14px;
+
+    font-weight:bold;
+}
+
+.projectDesc{
+    color:var(--muted);
+
+    font-size:10px;
+
+    margin-top:5px;
+
+    line-height:1.7;
+}
+
+.projectButtons{
+    display:flex;
+
+    gap:5px;
+
+    margin-top:10px;
+}
+
+.projectButtons button{
+    flex:1;
+
+    padding:7px 4px;
+
+    border-radius:8px;
+
+    border:1px solid var(--border);
+
+    background:#0a0f18;
+
+    color:#b9c2d3;
+
+    cursor:pointer;
+
+    font-size:10px;
+}
+
+.projectButtons button:hover{
+    border-color:
+        var(--purple);
+
+    color:white;
+}
+
+.projectButtons .danger:hover{
+    border-color:
+        var(--danger);
+
+    color:var(--danger);
+}
+
+/* =====================================================
+SIDEBAR BOTTOM
+===================================================== */
+
+.sideBottom{
+    padding:10px;
+
+    flex-shrink:0;
+
+    border-top:
+        1px solid var(--border);
+}
+
+.sideBottom button{
+    width:100%;
+
+    padding:10px;
+
+    border-radius:10px;
+
+    background:transparent;
+
+    border:1px solid var(--border);
+
+    color:var(--muted);
+
+    cursor:pointer;
+}
+
+.sideBottom button:hover{
+    color:var(--danger);
+
+    border-color:
+        var(--danger);
+}
+
+/* =====================================================
+CHAT AREA
+===================================================== */
+
+.chat{
+    flex:1;
+
+    min-width:0;
+    min-height:0;
+
+    height:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+}
+
+/* =====================================================
+HEADER
+===================================================== */
+
+.header{
+    height:70px;
+
+    min-height:70px;
+
+    flex-shrink:0;
+
+    border-bottom:
+        1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:
+        10px 18px;
+
+    background:#090d16dd;
+
+    backdrop-filter:blur(12px);
+}
+
+.menuBtn{
+    display:none;
+
+    width:40px;
+    height:40px;
+
+    flex-shrink:0;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    background:#121827;
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.chatName{
+    font-weight:bold;
+
+    font-size:15px;
+}
+
+.chatStatus{
+    color:var(--green);
+
+    font-size:10px;
+
+    margin-top:3px;
+}
+
+/* =====================================================
+MESSAGES
+===================================================== */
+
+.messages{
+    flex:1;
+
+    min-height:0;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    padding:
+        25px;
+
+    overscroll-behavior:contain;
+}
+
+.message{
+    width:100%;
+
+    max-width:900px;
+
+    margin:
+        0
+        auto
+        18px;
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:flex-start;
+}
+
+.avatar{
+    min-width:37px;
+
+    width:37px;
+    height:37px;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:13px;
+
+    font-weight:bold;
+}
+
+.avatar.ai{
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--cyan)
+        );
+}
+
+.avatar.user{
+    background:#222a3b;
+}
+
+.bubble{
+    background:#111725;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:
+        13px 15px;
+
+    max-width:
+        calc(100% - 50px);
+
+    line-height:1.8;
+
+    font-size:14px;
+
+    white-space:pre-wrap;
+
+    overflow-wrap:anywhere;
+}
+
+.message.user .bubble{
+    background:#171d2c;
+}
+
+/* Keep the message text column wide enough on mobile.
+   Without this, flexbox can shrink it to a tiny width and Persian text
+   appears as one character per line. */
+.message > div:nth-child(2){
+    min-width:0;
+    flex:1 1 auto;
+    width:0;
+}
+.message .bubble{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+}
+
+.attachment{
+    margin-top:9px;
+
+    padding:7px;
+
+    background:#0b101b;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+}
+
+.attachment img{
+    max-width:250px;
+
+    max-height:220px;
+
+    border-radius:8px;
+
+    display:block;
+}
+
+/* =====================================================
+INPUT AREA
+===================================================== */
+
+.inputArea{
+    width:100%;
+
+    flex-shrink:0;
+
+    padding:
+        12px
+        20px
+        max(
+            12px,
+            env(safe-area-inset-bottom)
+        );
+
+    border-top:
+        1px solid var(--border);
+
+    background:#090d16;
+
+    z-index:10;
+}
+
+.inputBox{
+    width:100%;
+
+    max-width:900px;
+
+    margin:auto;
+
+    position:relative;
+}
+
+textarea.chatInput{
+    display:block;
+
+    width:100%;
+
+    min-height:55px;
+
+    max-height:180px;
+
+    resize:none;
+
+    background:#111725;
+
+    border:1px solid var(--border);
+
+    color:white;
+
+    outline:none;
+
+    border-radius:17px;
+
+    padding:
+        15px
+        60px
+        15px
+        55px;
+
+    font-size:14px;
+
+    line-height:1.6;
+}
+
+textarea.chatInput:focus{
+    border-color:
+        #7658ff88;
+}
+
+.inputBtn{
+    position:absolute;
+
+    left:9px;
+
+    bottom:9px;
+
+    width:36px;
+    height:36px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    background:#0b101b;
+
+    color:#9ba6bb;
+
+    cursor:pointer;
+}
+
+.inputBtn:hover{
+    color:white;
+
+    border-color:
+        var(--purple);
+}
+
+.sendBtn{
+    position:absolute;
+
+    right:9px;
+
+    bottom:9px;
+
+    width:40px;
+    height:40px;
+
+    border:0;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            #5339df
+        );
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.sendBtn:disabled{
+    opacity:.5;
+}
+
+.sendBtn.stopMode{
+    opacity:1;
+    cursor:pointer;
+}
+
+.sendBtn.stopMode #sendBtnIcon{
+    display:block;
+    width:14px;
+    height:14px;
+    margin:auto;
+    border-radius:3px;
+    background:white;
+}
+
+/* =====================================================
+ATTACH MENU
+===================================================== */
+
+.attachMenu{
+    position:absolute;
+
+    left:10px;
+
+    bottom:58px;
+
+    width:160px;
+
+    background:#111725;
+
+    border:1px solid var(--border);
+
+    border-radius:13px;
+
+    padding:7px;
+
+    display:none;
+
+    z-index:500;
+
+    box-shadow:
+        0 15px 35px #0008;
+}
+
+.attachMenu.show{
+    display:block;
+}
+
+.attachOption{
+    padding:10px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    color:#cbd3e2;
+}
+
+.attachOption:hover{
+    background:#1a2132;
+
+    color:white;
+}
+
+/* File action modal */
+.fileActionBox{width:460px;}
+.fileActionBody{text-align:center;}
+.fileActionName{padding:14px 12px;margin-bottom:12px;border:1px solid var(--border);border-radius:12px;background:#080c14;color:#dbe3f1;word-break:break-word;}
+.fileActionQuestion{color:var(--muted);font-size:13px;line-height:1.7;margin:4px 0 16px;}
+.fileActionButtons{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.fileActionBtn{min-width:125px;min-height:44px;padding:11px 14px;border:1px solid var(--border);border-radius:12px;background:linear-gradient(180deg,#151c2b,#0e1420);color:var(--text);cursor:pointer;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;}
+.fileActionBtn:hover{transform:translateY(-1px);border-color:#46516b;background:linear-gradient(180deg,#1a2233,#111827);box-shadow:0 8px 24px #0005;}
+.fileActionBtn:active{transform:translateY(0);}
+.fileActionBtn.fileActionPrimary{border-color:#6d61ff66;background:linear-gradient(135deg,var(--purple),var(--cyan));box-shadow:0 7px 24px #5f55ff33;}
+.fileActionBtn .uiIcon{width:18px;height:18px;}
+.fileAppButtons .fileActionBtn{min-width:155px;}
+/* =====================================================
+MODALS
+===================================================== */
+
+.modal{
+    position:fixed;
+
+    inset:0;
+
+    background:#0009;
+
+    backdrop-filter:blur(7px);
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    z-index:1000;
+
+    padding:15px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modalBox{
+    width:650px;
+
+    max-width:100%;
+
+    max-height:90dvh;
+
+    overflow:auto;
+
+    background:#0d111b;
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    box-shadow:
+        0 25px 80px #000b;
+}
+
+.modalHeader{
+    padding:17px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+}
+
+.modalHeader h2{
+    font-size:17px;
+}
+
+.closeBtn{
+    width:35px;
+    height:35px;
+
+    border-radius:9px;
+
+    background:#121827;
+
+    border:1px solid var(--border);
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.modalBody{
+    padding:18px;
+}
+
+.formLabel{
+    display:block;
+
+    color:#cbd3e2;
+
+    font-size:12px;
+
+    margin-bottom:7px;
+}
+
+.formInput,
+.formTextarea{
+    width:100%;
+
+    background:#080c14;
+
+    border:1px solid var(--border);
+
+    color:white;
+
+    border-radius:10px;
+
+    padding:11px;
+
+    outline:none;
+
+    margin-bottom:13px;
+}
+
+.formTextarea{
+    min-height:100px;
+
+    resize:vertical;
+}
+
+.formInput:focus,
+.formTextarea:focus{
+    border-color:
+        var(--purple);
+}
+
+.primaryBtn{
+    width:100%;
+
+    padding:12px;
+
+    border:0;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple),
+            var(--cyan)
+        );
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+/* =====================================================
+BEHAVIOR
+===================================================== */
+
+.behaviorHint{
+    color:var(--muted);
+
+    font-size:11px;
+
+    line-height:1.8;
+
+    background:#101622;
+
+    border:1px solid var(--border);
+
+    padding:10px;
+
+    border-radius:10px;
+
+    margin-bottom:14px;
+}
+
+.rangeBox{
+    margin:17px 0;
+}
+
+.rangeTop{
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:12px;
+
+    margin-bottom:7px;
+}
+
+.rangeValue{
+    color:var(--cyan);
+}
+
+input[type="range"]{
+    width:100%;
+
+    accent-color:
+        var(--purple);
+}
+
+/* =====================================================
+OVERLAY
+===================================================== */
+
+.overlay{
+    position:fixed;
+
+    inset:0;
+
+    background:#0008;
+
+    display:none;
+
+    z-index:90;
+}
+
+.overlay.show{
+    display:block;
+}
+
+/* =====================================================
+FILE PREVIEW / THINKING / CONTEXT / MEMORY
+===================================================== */
+
+.filePreview{
+    display:none;
+    margin-bottom:8px;
+    padding:8px;
+    background:#101622;
+    border:1px solid var(--border);
+    border-radius:12px;
+    align-items:center;
+    gap:9px;
+    animation:slideUp .2s ease;
+}
+
+.filePreview.show{display:flex;}
+.filePreviewThumb{width:48px;height:48px;object-fit:cover;border-radius:8px;background:#080c14;flex-shrink:0;}
+.filePreviewInfo{min-width:0;flex:1;}
+.filePreviewName{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.filePreviewMeta{font-size:10px;color:var(--muted);margin-top:3px;}
+.fileRemoveBtn{width:32px;height:32px;border:1px solid var(--border);background:#0b101b;color:#ff6688;border-radius:9px;cursor:pointer;flex-shrink:0;}
+
+.thinkingWrap{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:2px 0 18px 47px;max-width:900px;}
+.thinkingDots{display:flex;gap:4px;align-items:center;}
+.thinkingDots i{width:8px;height:8px;border-radius:50%;background:currentColor;display:block;animation:thinkingDot 1.1s infinite ease-in-out;}
+.thinkingDots i:nth-child(2){animation-delay:.15s}.thinkingDots i:nth-child(3){animation-delay:.3s}
+.thinkingTimer{font-variant-numeric:tabular-nums;min-width:42px;}
+
+.message{position:relative;}
+.message .bubble{cursor:default;}
+
+.contextMenu{position:fixed;display:none;min-width:175px;padding:7px;background:linear-gradient(180deg,#141b2a,#0d121e);border:1px solid #3b4660;border-radius:15px;box-shadow:0 22px 60px #000b,0 0 30px #7658ff18;z-index:3000;animation:contextIn .16s cubic-bezier(.2,.8,.2,1);}
+.contextMenu.show{display:block;}
+.contextMenu button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;padding:11px 12px;border:0;background:transparent;color:#e8edf7;border-radius:10px;cursor:pointer;font-family:inherit;transition:transform .16s ease,background .16s ease,color .16s ease;}
+.contextMenu button:hover{background:linear-gradient(90deg,#1c2740,#171e31);transform:translateX(-3px);color:#fff;}
+.contextMenu button:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.contextThinkingInfo{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:11px 12px;color:#a99dff;font-weight:700;font-variant-numeric:tabular-nums;direction:rtl;white-space:nowrap;}
+.contextThinkingInfo .uiIcon{color:#a99dff;}
+.uiIcon,.menuIcon,.animatedIcon{display:inline-flex;width:19px;height:19px;align-items:center;justify-content:center;flex:0 0 19px;}
+.uiIcon svg,.menuIcon svg,.animatedIcon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.contextMenu button:hover .uiIcon{color:#8f7cff;filter:drop-shadow(0 0 7px #7658ff88);}
+.menuIcon{color:#9ea9bd;transition:transform .22s ease,color .22s ease,filter .22s ease;}
+button:hover .menuIcon,.attachOption:hover .menuIcon{color:#8f7cff;transform:scale(1.12) rotate(-5deg);filter:drop-shadow(0 0 8px #7658ff88);}
+.animatedIcon{color:#aab5ca;transition:transform .2s ease,color .2s ease;}
+.inputBtn:hover .animatedIcon{color:#fff;transform:rotate(-12deg) scale(1.12);filter:drop-shadow(0 0 10px #27d9ff66);}
+
+.languageMenuBtn{margin-bottom:7px;}
+.languageBox{width:min(560px,calc(100vw - 28px));}
+.languageGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+.languageOption{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;border:1px solid var(--border);background:#101622;color:#e8edf7;border-radius:12px;cursor:pointer;font-family:inherit;text-align:start;transition:background .15s ease,border-color .15s ease,transform .15s ease;}
+.languageOption:hover{background:#172036;border-color:#56627e;transform:translateY(-1px);}
+.languageOption.active{border-color:#7868ff;background:#1a1830;box-shadow:0 0 0 1px #7868ff22;}
+.languageOption span{font-size:14px;font-weight:700;}
+.languageOption small{font-size:10px;color:var(--muted);}
+.memoryMenuBtn{margin-bottom:7px;}
+.memoryItem{padding:12px;background:#101622;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;position:relative;padding-left:45px;}
+.memoryCategory{font-size:10px;color:var(--cyan);margin-bottom:5px;}
+.memoryText{font-size:13px;line-height:1.8;white-space:pre-wrap;}
+.memoryDelete{position:absolute;left:8px;top:8px;width:28px;height:28px;border:1px solid var(--border);background:#0b101b;color:#ff6688;border-radius:8px;cursor:pointer;}
+.memoryEmpty{color:var(--muted);font-size:12px;text-align:center;padding:20px;}
+.memoryAddRow{margin-top:15px;padding-top:15px;border-top:1px solid var(--border);}
+.memoryAddRow .formInput{margin-bottom:8px;}
+.editMessageBox{width:650px;}
+
+@keyframes thinkingDot{0%,70%,100%{transform:scale(.55);opacity:.4}35%{transform:scale(1);opacity:1}}
+@keyframes contextIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* =====================================================
+MOBILE
+===================================================== */
+
+@media(max-width:700px){
+
+    .sidebar{
+
+        position:fixed;
+
+        top:0;
+        right:0;
+        bottom:0;
+
+        height:100dvh;
+
+        transform:
+            translateX(105%);
+
+        box-shadow:
+            -20px 0 50px #0008;
+    }
+
+    .sidebar.open{
+
+        transform:
+            translateX(0);
+    }
+
+    .menuBtn{
+        display:block;
+    }
+
+    .messages{
+
+        padding:
+            15px
+            10px
+            15px;
+    }
+
+    .inputArea{
+
+        padding:
+            8px
+            10px
+            max(
+                8px,
+                env(safe-area-inset-bottom)
+            );
+    }
+
+    textarea.chatInput{
+
+        min-height:52px;
+
+        padding:
+            13px
+            58px
+            13px
+            52px;
+    }
+
+    .bubble{
+
+        font-size:13px;
+
+        max-width:
+            calc(100% - 45px);
+    }
+
+    .message{
+
+        gap:8px;
+    }
+
+    .avatar{
+
+        min-width:34px;
+
+        width:34px;
+        height:34px;
+    }
+
+    .itemTools{
+
+        opacity:1;
+    }
+}
+
+
+.messageMeta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 5px 6px;
+    min-height:18px;
+    font-size:11px;
+    color:#8792a8;
+    opacity:.95;
+    direction:rtl;
+}
+.messageMeta .metaTime,
+.messageMeta .thinkingDuration{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    white-space:nowrap;
+}
+.messageMeta .metaTime::before{
+    content:"";
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:currentColor;
+    opacity:.65;
+}
+.messageMeta .thinkingDuration{
+    color:#a99dff;
+    font-weight:600;
+}
+.messageMeta .thinkingDuration::before{
+    content:"⏱";
+    font-size:11px;
+}
+.message.user .messageMeta{
+    justify-content:flex-end;
+}
+.message.assistant .messageMeta{
+    justify-content:flex-start;
+}
+
+</style>
+
+<style id="berinzo-ultra-enhancement">
+:root{
+  --bz-accent:#7c5cff;
+  --bz-accent2:#00d4ff;
+  --bz-glow:rgba(124,92,255,.32);
+  --bz-panel:rgba(20,18,38,.72);
+}
+body{background:
+ radial-gradient(circle at 15% 10%,rgba(124,92,255,.14),transparent 28%),
+ radial-gradient(circle at 85% 20%,rgba(0,212,255,.10),transparent 25%),
+ radial-gradient(circle at 50% 100%,rgba(255,70,180,.08),transparent 30%),
+ #090811 !important;
+}
+body::before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.24;
+ background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+ background-size:42px 42px;
+ mask-image:linear-gradient(to bottom,black,transparent 90%);
+}
+*{scrollbar-width:thin;scrollbar-color:rgba(124,92,255,.65) transparent}
+button,.chat-item,.project-item,.memory-item,.message,.composer,.sidebar{
+ transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease,filter .22s ease;
+}
+button:hover{filter:brightness(1.12);transform:translateY(-1px)}
+button:active{transform:scale(.97)}
+.message{
+ animation:bzMessageIn .38s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes bzMessageIn{
+ from{opacity:0;transform:translateY(12px) scale(.985);filter:blur(4px)}
+ to{opacity:1;transform:none;filter:none}
+}
+.message.user{box-shadow:0 8px 35px rgba(124,92,255,.10)}
+.message.assistant{box-shadow:0 8px 35px rgba(0,212,255,.055)}
+.composer{
+ backdrop-filter:blur(24px) saturate(145%);
+ box-shadow:0 12px 55px rgba(0,0,0,.32),0 0 0 1px rgba(255,255,255,.035) inset;
+}
+#sendBtn{
+ position:relative;overflow:hidden;
+ box-shadow:0 0 0 1px rgba(255,255,255,.08) inset,0 8px 28px var(--bz-glow);
+}
+#sendBtn::after{
+ content:"";position:absolute;inset:-40%;
+ background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.22),transparent 22%);
+ animation:bzSpin 3s linear infinite;pointer-events:none;
+}
+@keyframes bzSpin{to{transform:rotate(360deg)}}
+#sendBtn.stopMode{box-shadow:0 0 28px rgba(255,80,100,.32)}
+.sidebar{
+ background:linear-gradient(180deg,rgba(16,14,29,.92),rgba(10,9,19,.86)) !important;
+ backdrop-filter:blur(26px) saturate(135%);
+ border-right-color:rgba(255,255,255,.07)!important;
+}
+.chat-item:hover,.project-item:hover,.memory-item:hover{
+ transform:translateX(3px);
+ box-shadow:0 8px 28px rgba(124,92,255,.10);
+}
+input,textarea,select{
+ transition:border-color .2s,box-shadow .2s,background .2s;
+}
+input:focus,textarea:focus,select:focus{
+ border-color:rgba(124,92,255,.72)!important;
+ box-shadow:0 0 0 4px rgba(124,92,255,.12),0 0 24px rgba(124,92,255,.10)!important;
+}
+.bz-ultra-badge{
+ display:inline-flex;align-items:center;gap:7px;margin-inline-start:8px;
+ padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800;
+ color:#fff;background:linear-gradient(135deg,rgba(124,92,255,.28),rgba(0,212,255,.18));
+ border:1px solid rgba(255,255,255,.10);box-shadow:0 0 20px rgba(124,92,255,.15);
+}
+.bz-ultra-badge i{
+ width:7px;height:7px;border-radius:50%;background:#53ffa0;
+ box-shadow:0 0 10px #53ffa0;animation:bzPulse 1.5s infinite;
+}
+@keyframes bzPulse{50%{opacity:.35;transform:scale(.65)}}
+.bz-toast{
+ position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);
+ padding:12px 18px;border:1px solid rgba(255,255,255,.1);border-radius:16px;
+ background:rgba(15,13,28,.88);backdrop-filter:blur(18px);
+ color:#fff;box-shadow:0 15px 50px rgba(0,0,0,.38),0 0 30px rgba(124,92,255,.14);
+ z-index:99999;opacity:0;pointer-events:none;
+ transition:.3s cubic-bezier(.2,.8,.2,1);font-size:13px;
+}
+.bz-toast.show{opacity:1;transform:translate(-50%,0)}
+.bz-stars{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.bz-stars span{
+ position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.35;
+ animation:bzFloat linear infinite;
+}
+@keyframes bzFloat{
+ from{transform:translateY(110vh);opacity:0}
+ 12%{opacity:.45}90%{opacity:.25}to{transform:translateY(-10vh);opacity:0}
+}
+@media(max-width:700px){
+ .bz-ultra-badge{font-size:10px;padding:4px 8px}
+ .bz-toast{width:calc(100% - 32px);text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+}
+</style>
+<div class="bz-stars" id="bzStars"></div>
+<div class="bz-toast" id="bzToast"></div>
+<script id="berinzo-ultra-enhancement-js">
+(()=> {
+ const $=id=>document.getElementById(id);
+ const stars=$("bzStars");
+ if(stars){
+   const frag=document.createDocumentFragment();
+   for(let i=0;i<42;i++){
+     const e=document.createElement("span");
+     e.style.left=(Math.random()*100)+"%";
+     e.style.animationDuration=(8+Math.random()*16)+"s";
+     e.style.animationDelay=(-Math.random()*18)+"s";
+     e.style.transform=`scale(${.5+Math.random()*1.8})`;
+     frag.appendChild(e);
+   }
+   stars.appendChild(frag);
+ }
+ window.berinzoUltraToast=function(msg){
+   const t=$("bzToast"); if(!t)return;
+   t.textContent=msg;t.classList.add("show");
+   clearTimeout(window.__bzToastTimer);
+   window.__bzToastTimer=setTimeout(()=>t.classList.remove("show"),2600);
+ };
+ // Add a subtle premium badge to the main heading when available.
+ const observer=new MutationObserver(()=>{
+   const candidates=[...document.querySelectorAll("h1,h2,.brand,.logo,.app-title")];
+   const host=candidates.find(x=>/berinzo/i.test(x.textContent||""));
+   if(host && !host.querySelector(".bz-ultra-badge")){
+     const b=document.createElement("span"); b.className="bz-ultra-badge";
+     b.innerHTML="<i></i> ULTRA";
+     host.appendChild(b);
+   }
+ });
+ observer.observe(document.documentElement,{childList:true,subtree:true});
+ setTimeout(()=>observer.disconnect(),15000);
+
+ // Friendly network feedback without touching the existing API flow.
+ window.addEventListener("online",()=>window.berinzoUltraToast("اتصال اینترنت دوباره برقرار شد ✨"));
+ window.addEventListener("offline",()=>window.berinzoUltraToast("اتصال اینترنت قطع شد؛ پیام‌ها فعلاً ارسال نمی‌شوند."));
+})();
+</script>
+
+
+<style id="berinzo-message-cleanup">
+/* Hollow blue message frame: no filled rectangle behind the text. */
+.message{background:transparent!important;border:0!important;}
+.message .bubble{
+  background:transparent!important;
+  border:1px solid rgba(70,190,255,.58)!important;
+  border-radius:18px!important;
+  box-shadow:
+    0 0 0 1px rgba(0,212,255,.08) inset,
+    0 0 18px rgba(0,170,255,.18),
+    0 0 42px rgba(80,100,255,.08)!important;
+  padding:11px 15px!important;
+  position:relative;
+  overflow:hidden;
+}
+.message .bubble::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 0%,rgba(0,212,255,.08) 45%,transparent 65%);
+  transform:translateX(-120%);
+  animation:bzBubbleSweep 5s ease-in-out infinite;
+}
+.message.user .bubble{
+  border-color:rgba(0,212,255,.72)!important;
+  box-shadow:0 0 0 1px rgba(0,212,255,.10) inset,0 0 22px rgba(0,190,255,.22)!important;
+}
+@keyframes bzBubbleSweep{
+  0%,55%{transform:translateX(-120%)}
+  75%,100%{transform:translateX(120%)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- =====================================================
+SIDEBAR
+===================================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+    onclick="event.stopPropagation()">
+
+    <div class="logoArea">
+
+        <div class="logo">
+
+            <svg viewBox="0 0 24 24">
+
+                <path d="
+                M12 2
+                3 7
+                v10
+                l9 5
+                9-5
+                V7
+                l-9-5z
+
+                m0 3
+                6 3.3
+                v7.4
+                L12 19
+                6 15.7
+                V8.3
+                L12 5z
+
+                m-1.2 3
+                v3.2
+                H8
+                v2.4
+                h2.8
+                V17
+                h2.4
+                v-3.4
+                H16
+                v-2.4
+                h-2.8
+                V8
+                h-2.4z"/>
+
+            </svg>
+
+        </div>
+
+        <div>
+
+            <div class="logoText">
+                Berinzo
+            </div>
+
+            <div class="logoSub">
+                AI Assistant
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="newChat"
+        onclick="newChat()">
+
+        ＋ چت جدید
+
+    </button>
+
+
+    <!-- فقط دو تب -->
+
+    <div class="tabs">
+
+        <button
+            class="tab active"
+            id="chatTab"
+            onclick="switchTab('chats')">
+
+            چت‌ها
+
+        </button>
+
+        <button
+            class="tab"
+            id="projectTab"
+            onclick="switchTab('projects')">
+
+            پروژه‌ها
+
+        </button>
+
+    </div>
+
+
+    <div class="sidebarContent">
+
+        <!-- CHATS -->
+
+        <div
+            class="tabContent"
+            id="chatsContent">
+
+            <div id="chatList"></div>
+
+        </div>
+
+
+        <!-- PROJECTS -->
+
+        <div
+            class="tabContent hidden"
+            id="projectsContent">
+
+            <button
+                class="projectCreateBtn"
+                onclick="openCreateProject()">
+
+                ＋ ساخت پروژه جدید
+
+            </button>
+
+            <div id="projectList"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="sideBottom">
+
+        <button class="languageMenuBtn" onclick="openLanguage()">
+            <span class="menuIcon" data-icon="globe"></span> <span id="languageMenuLabel">زبان</span>
+        </button>
+
+        <button class="memoryMenuBtn" onclick="openMemory()">
+            <span class="menuIcon" data-icon="brain"></span> <span id="memoryMenuLabel">حافظه</span>
+        </button>
+
+        <button onclick="clearChats()">
+
+            <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                style="
+                vertical-align:middle;
+                fill:none;
+                stroke:currentColor;
+                stroke-width:2">
+
+                <path d="M4 7h16"/>
+                <path d="M9 7V4h6v3"/>
+                <path d="M7 7l1 14h8l1-14"/>
+                <path d="M10 11v5"/>
+                <path d="M14 11v5"/>
+
+            </svg>
+
+            حذف همه چت‌ها
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!--
+  مهم:
+  overlay خارج از sidebar است.
+  با کلیک روی overlay سایدبار بسته می‌شود.
+-->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeMenu()">
+</div>
+
+
+<!-- =====================================================
+CHAT
+===================================================== -->
+
+<main class="chat">
+
+    <header class="header">
+
+        <button
+            class="menuBtn"
+            onclick="
+                event.stopPropagation();
+                toggleMenu();
+            ">
+
+            ☰
+
+        </button>
+
+
+        <div>
+
+            <div
+                class="chatName"
+                id="chatName">
+
+                Berinzo
+
+            </div>
+
+            <div class="chatStatus">
+
+                ● آنلاین
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <section
+        class="messages"
+        id="messages">
+
+    </section>
+
+
+    <!-- INPUT همیشه بعد از messages قرار دارد -->
+
+    <div class="inputArea">
+
+        <div class="inputBox">
+
+            <div class="filePreview" id="filePreview"></div>
+
+            <textarea
+                class="chatInput"
+                id="messageInput"
+                placeholder="پیامت رو برای Berinzo بنویس..."
+                onkeydown="handleEnter(event)"></textarea>
+
+
+            <button
+                class="inputBtn"
+                id="attachButton"
+                aria-label="افزودن فایل"
+                onclick="
+                    event.stopPropagation();
+                    toggleAttach();
+                ">
+                <span class="animatedIcon" id="attachIcon"></span>
+            </button>
+
+
+            <button
+                class="sendBtn"
+                id="sendBtn"
+                aria-label="ارسال پیام"
+                onclick="handleSendButton()">
+
+                <span id="sendBtnIcon">➤</span>
+
+            </button>
+
+
+            <div
+                class="attachMenu"
+                id="attachMenu">
+
+                <div
+                    class="attachOption"
+                    onclick="chooseFile('image/*')">
+
+                    <span class="menuIcon" data-icon="image"></span> تصویر
+
+                </div>
+
+                <div
+                    class="attachOption"
+                    onclick="chooseFile('video/*')">
+
+                    <span class="menuIcon" data-icon="video"></span> ویدیو
+
+                </div>
+
+                <div
+                    class="attachOption"
+                    onclick="chooseFile('audio/*')">
+
+                    <span class="menuIcon" data-icon="audio"></span> صدا
+
+                </div>
+
+                <div
+                    class="attachOption"
+                    onclick="chooseFile('*/*')">
+
+                    <span class="menuIcon" data-icon="file"></span> فایل
+
+                </div>
+
+            </div>
+
+
+            <input
+                type="file"
+                id="fileInput"
+                style="display:none"
+                onchange="handleFile(event)">
+
+        </div>
+
+    </div>
+
+</main>
+
+</div>
+
+
+<!-- =====================================================
+CREATE PROJECT
+===================================================== -->
+
+<div
+    class="modal"
+    id="createProjectModal"
+    onclick="closeCreateProject()">
+
+    <div
+        class="modalBox"
+        onclick="event.stopPropagation()">
+
+        <div class="modalHeader">
+
+            <h2>
+                ساخت پروژه جدید
+            </h2>
+
+            <button
+                class="closeBtn"
+                onclick="closeCreateProject()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div class="modalBody">
+
+            <label class="formLabel">
+                نام پروژه
+            </label>
+
+            <input
+                class="formInput"
+                id="projectNameInput"
+                placeholder="مثلاً پروژه بازی من">
+
+
+            <label class="formLabel">
+                توضیح پروژه
+            </label>
+
+            <textarea
+                class="formTextarea"
+                id="projectDescriptionInput"
+                placeholder="این پروژه درباره چیست؟"></textarea>
+
+
+            <button
+                class="primaryBtn"
+                onclick="createProject()">
+
+                ساخت پروژه
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+MEMORY
+===================================================== -->
+<div class="modal" id="memoryModal" onclick="closeMemory()">
+    <div class="modalBox memoryBox" onclick="event.stopPropagation()">
+        <div class="modalHeader">
+            <h2>🧠 حافظه Berinzo</h2>
+            <button class="closeBtn" onclick="closeMemory()">×</button>
+        </div>
+        <div class="modalBody">
+            <div class="behaviorHint">
+                مواردی که صریحاً برای ذخیره‌کردن می‌گویی و نکات ماندگار و مفید، اینجا نگهداری می‌شوند.
+            </div>
+            <div id="memoryList"></div>
+            <div class="memoryAddRow">
+                <input class="formInput" id="memoryTextInput" placeholder="مثلاً: من بازی‌سازی با Unreal را دوست دارم">
+                <select class="formInput" id="memoryCategoryInput">
+                    <option value="شخصی">شخصی</option>
+                    <option value="علایق">علایق</option>
+                    <option value="کار و پروژه">کار و پروژه</option>
+                    <option value="ترجیحات">ترجیحات</option>
+                    <option value="یادداشت">یادداشت</option>
+                </select>
+                <button class="primaryBtn" onclick="addMemoryFromUI()">ذخیره در حافظه</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+FILE ACTION MODAL
+===================================================== -->
+<div class="modal" id="fileActionModal" onclick="closeFileAction()">
+    <div class="modalBox fileActionBox" onclick="event.stopPropagation()">
+        <div class="modalHeader">
+            <h2 id="fileActionTitle">فایل</h2>
+            <button class="closeBtn" onclick="closeFileAction()">×</button>
+        </div>
+        <div class="modalBody fileActionBody">
+            <div class="fileActionName" id="fileActionName"></div>
+            <div class="fileActionQuestion" id="fileActionQuestion">می‌خواهید با این فایل چه کار کنید؟</div>
+            <div class="fileActionButtons">
+                <button class="fileActionBtn fileActionPrimary" id="fileOpenBtn" onclick="fileActionOpen()"><span class="uiIcon" data-icon="open"></span><span>باز کردن</span></button>
+                <button class="fileActionBtn" id="fileDownloadBtn" onclick="fileActionDownload()"><span class="uiIcon" data-icon="download"></span><span>دانلود</span></button>
+                <button class="fileActionBtn" id="fileCancelBtn" onclick="closeFileAction()"><span class="uiIcon" data-icon="close"></span><span>لغو</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="fileAppModal" onclick="closeFileAppChooser()">
+    <div class="modalBox fileActionBox" onclick="event.stopPropagation()">
+        <div class="modalHeader">
+            <h2 id="fileAppTitle">انتخاب برنامه</h2>
+            <button class="closeBtn" onclick="closeFileAppChooser()">×</button>
+        </div>
+        <div class="modalBody fileActionBody">
+            <div class="fileActionName" id="fileAppName"></div>
+            <div class="fileActionQuestion" id="fileAppQuestion">با کدام برنامه می‌خواهید فایل را باز کنید؟</div>
+            <div class="fileActionButtons fileAppButtons">
+                <button class="fileActionBtn fileActionPrimary" onclick="openFileInBrowser()"><span class="uiIcon" data-icon="open"></span><span id="fileBrowserBtn">مرورگر</span></button>
+                <button class="fileActionBtn" onclick="chooseFileApp()"><span class="uiIcon" data-icon="share"></span><span id="fileChooseAppBtn">انتخاب برنامه از دستگاه</span></button>
+                <button class="fileActionBtn" onclick="closeFileAppChooser()"><span class="uiIcon" data-icon="close"></span><span id="fileAppCancelBtn">لغو</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+MESSAGE CONTEXT MENU
+===================================================== -->
+<div class="contextMenu" id="messageContextMenu">
+    <button onclick="contextCopy()"><span class="uiIcon" data-icon="copy"></span><span id="contextCopyLabel">کپی</span></button>
+    <button id="contextEditBtn" onclick="contextEdit()"><span class="uiIcon" data-icon="edit"></span><span id="contextEditLabel">ویرایش</span></button>
+    <div class="contextThinkingInfo" id="contextThinkingInfo"><span class="uiIcon" data-icon="clock"></span><span id="contextThinkingValue">0.00 ثانیه</span></div>
+</div>
+
+<!-- =====================================================
+EDIT MESSAGE
+===================================================== -->
+<div class="modal" id="editMessageModal" onclick="closeEditMessage()">
+    <div class="modalBox editMessageBox" onclick="event.stopPropagation()">
+        <div class="modalHeader">
+            <h2>ویرایش پیام</h2>
+            <button class="closeBtn" onclick="closeEditMessage()">×</button>
+        </div>
+        <div class="modalBody">
+            <textarea class="formTextarea" id="editMessageInput" oninput="updateEditState()"></textarea>
+            <button class="primaryBtn" id="saveEditBtn" onclick="saveEditedMessage()" disabled>ویرایش و ارسال دوباره</button>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+LANGUAGE
+===================================================== -->
+<div class="modal" id="languageModal" onclick="closeLanguage()">
+    <div class="modalBox languageBox" onclick="event.stopPropagation()">
+        <div class="modalHeader">
+            <h2 id="languageModalTitle">انتخاب زبان</h2>
+            <button class="closeBtn" onclick="closeLanguage()">×</button>
+        </div>
+        <div class="modalBody languageGrid" id="languageList"></div>
+    </div>
+</div>
+
+<!-- =====================================================
+BEHAVIOR
+===================================================== -->
+
+<div
+    class="modal"
+    id="behaviorModal"
+    onclick="closeBehavior()">
+
+    <div
+        class="modalBox"
+        onclick="event.stopPropagation()">
+
+        <div class="modalHeader">
+
+            <h2 id="behaviorTitle">
+                اخلاق و رفتار پروژه
+            </h2>
+
+            <button
+                class="closeBtn"
+                onclick="closeBehavior()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div class="modalBody">
+
+            <div class="behaviorHint">
+
+                تنظیمات این بخش واقعاً هنگام ارسال پیام
+                به هوش مصنوعی این پروژه فرستاده می‌شوند.
+
+            </div>
+
+
+            <label class="formLabel">
+
+                دستورهای اختصاصی پروژه
+
+            </label>
+
+
+            <textarea
+                class="formTextarea"
+                id="behaviorInstructions"
+                placeholder="
+مثلاً:
+همیشه فارسی جواب بده.
+در کدنویسی کد کامل بده.
+لحن دوستانه داشته باش.
+"></textarea>
+
+
+            <div class="rangeBox">
+
+                <div class="rangeTop">
+
+                    <span>
+                        دوستانه بودن
+                    </span>
+
+                    <span
+                        class="rangeValue"
+                        id="friendlyValue">
+
+                        70%
+
+                    </span>
+
+                </div>
+
+
+                <input
+                    type="range"
+                    id="friendlyRange"
+                    min="0"
+                    max="100"
+                    value="70"
+                    oninput="
+                    document.getElementById(
+                        'friendlyValue'
+                    ).textContent=this.value+'%';
+                    ">
+
+            </div>
+
+
+            <div class="rangeBox">
+
+                <div class="rangeTop">
+
+                    <span>
+                        میزان جزئیات
+                    </span>
+
+                    <span
+                        class="rangeValue"
+                        id="detailValue">
+
+                        60%
+
+                    </span>
+
+                </div>
+
+
+                <input
+                    type="range"
+                    id="detailRange"
+                    min="0"
+                    max="100"
+                    value="60"
+                    oninput="
+                    document.getElementById(
+                        'detailValue'
+                    ).textContent=this.value+'%';
+                    ">
+
+            </div>
+
+
+            <div class="rangeBox">
+
+                <div class="rangeTop">
+
+                    <span>
+                        خلاقیت
+                    </span>
+
+                    <span
+                        class="rangeValue"
+                        id="creativeValue">
+
+                        70%
+
+                    </span>
+
+                </div>
+
+
+                <input
+                    type="range"
+                    id="creativeRange"
+                    min="0"
+                    max="100"
+                    value="70"
+                    oninput="
+                    document.getElementById(
+                        'creativeValue'
+                    ).textContent=this.value+'%';
+                    ">
+
+            </div>
+
+
+            <button
+                class="primaryBtn"
+                onclick="saveBehavior()">
+
+                ذخیره رفتار پروژه
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+CONFIG
+===================================================== */
+
+const DEEPSEEK_API_KEY =
+"sk-d821140b6caa4e73905df073e2644249";
+
+/*
+  انتخاب مدل از UI حذف شده.
+*/
+const BERINZO_MODEL =
+"deepseek-flash";
+
+/* =====================================================
+RATE LIMIT / CREDIT COOLDOWN
+===================================================== */
+let berinzoCooldownUntil = Number(localStorage.getItem("berinzo_cooldown_until") || 0);
+let berinzoCooldownTimer = null;
+
+function getCooldownRemaining(){
+    return Math.max(0, berinzoCooldownUntil - Date.now());
+}
+
+function formatCooldownDuration(ms){
+    let totalSec=Math.ceil(Math.max(0,ms)/1000);
+    const h=Math.floor(totalSec/3600);
+    totalSec%=3600;
+    const m=Math.floor(totalSec/60);
+    const s=totalSec%60;
+    if(h) return `${h} ساعت و ${m} دقیقه`;
+    if(m) return `${m} دقیقه و ${s} ثانیه`;
+    return `${s} ثانیه`;
+}
+
+function formatCooldownClock(ts){
+    return new Date(ts).toLocaleTimeString(currentLanguage === "fa" ? "fa-IR" : undefined,{hour:"2-digit",minute:"2-digit"});
+}
+
+function isRateLimitError(error){
+    const status=Number(error?.status || 0);
+    const text=String(error?.message || "").toLowerCase();
+    return status===429 || /rate.?limit|too many requests|tokens per min|tpm|quota|credit|credits|insufficient.?balance|billing|limit reached|usage limit|try again in/.test(text);
+}
+
+function extractCooldownMs(error){
+    const text=String(error?.message || "");
+    // Examples: 2h35m31.2s, 35m, 20s
+    const h=text.match(/(\d+(?:\.\d+)?)\s*h/i);
+    const m=text.match(/(\d+(?:\.\d+)?)\s*m/i);
+    const sec=text.match(/(\d+(?:\.\d+)?)\s*s/i);
+    if(h || m || sec){
+        const ms=((h?Number(h[1]):0)*3600+(m?Number(m[1]):0)*60+(sec?Number(sec[1]):0))*1000;
+        if(ms>0) return ms;
+    }
+    // Retry-After is sometimes included as seconds in the error text.
+    const retry=text.match(/retry.?after[^0-9]*(\d+(?:\.\d+)?)/i);
+    if(retry) return Number(retry[1])*1000;
+    // Safe fallback for a rate-limit response when no exact duration is supplied.
+    return 60*60*1000;
+}
+
+function startBerinzoCooldown(error){
+    const ms=extractCooldownMs(error);
+    berinzoCooldownUntil=Date.now()+ms;
+    localStorage.setItem("berinzo_cooldown_until",String(berinzoCooldownUntil));
+    updateCooldownUI();
+    if(berinzoCooldownTimer) clearInterval(berinzoCooldownTimer);
+    berinzoCooldownTimer=setInterval(()=>{
+        if(getCooldownRemaining()<=0){
+            clearInterval(berinzoCooldownTimer);
+            berinzoCooldownTimer=null;
+            berinzoCooldownUntil=0;
+            localStorage.removeItem("berinzo_cooldown_until");
+        }
+        updateCooldownUI();
+    },1000);
+}
+
+function updateCooldownUI(){
+    const blocked=getCooldownRemaining()>0;
+    const input=document.getElementById("messageInput");
+    const sendBtn=document.getElementById("sendBtn");
+    const attach=document.getElementById("attachButton");
+    if(input && !isThinking) input.disabled=blocked;
+    if(sendBtn && !isThinking){
+        sendBtn.disabled=blocked;
+        sendBtn.title=blocked ? `محدودیت فعال است؛ ${formatCooldownDuration(getCooldownRemaining())} دیگر برگرد` : "ارسال پیام";
+    }
+    if(attach && !isThinking) attach.disabled=blocked;
+}
+
+function getCooldownMessage(){
+    return `⏳ فعلاً به محدودیت استفاده از هوش مصنوعی رسیدی.\n\nلطفاً ${formatCooldownDuration(getCooldownRemaining())} دیگر برگرد.\nزمان باز شدن: ${formatCooldownClock(berinzoCooldownUntil)}\n\nتا آن زمان امکان ارسال پیام غیرفعال است.`;
+}
+
+if(getCooldownRemaining()>0){
+    berinzoCooldownTimer=setInterval(()=>{
+        if(getCooldownRemaining()<=0){
+            clearInterval(berinzoCooldownTimer);
+            berinzoCooldownTimer=null;
+            berinzoCooldownUntil=0;
+            localStorage.removeItem("berinzo_cooldown_until");
+        }
+        updateCooldownUI();
+    },1000);
+}
+
+
+/* =====================================================
+DATA
+===================================================== */
+
+let chats =
+JSON.parse(
+    localStorage.getItem(
+        "berinzo_chats"
+    ) || "[]"
+);
+
+let projects =
+JSON.parse(
+    localStorage.getItem(
+        "berinzo_projects"
+    ) || "[]"
+);
+
+let currentChatId=null;
+
+let selectedFile=null;
+let pendingFileAction=null;
+let isThinking=false;
+let thinkingStartedAt=0;
+let thinkingTimerInterval=null;
+let contextMessageIndex=null;
+let editMessageIndex=null;
+
+let memories = JSON.parse(localStorage.getItem("berinzo_memories") || "[]");
+
+let behaviorProjectId=null;
+let activeAbortController=null;
+let stopRequested=false;
+
+
+/* =====================================================
+LANGUAGE SYSTEM
+===================================================== */
+const LANGUAGE_DATA={
+  fa:{name:"فارسی",native:"فارسی",dir:"rtl",ui:{language:"زبان",memory:"حافظه",newChat:"چت جدید",chats:"چت‌ها",projects:"پروژه‌ها",newProject:"ساخت پروژه جدید",clearChats:"حذف همه چت‌ها",online:"آنلاین",placeholder:"پیامت رو برای Berinzo بنویس...",image:"تصویر",video:"ویدیو",audio:"صدا",file:"فایل",copy:"کپی",edit:"ویرایش",thinking:"زمان فکر کردن",memoryTitle:"حافظه Berinzo",memoryHint:"مواردی که صریحاً برای ذخیره‌کردن می‌گویی و نکات ماندگار و مفید، اینجا نگهداری می‌شوند.",memoryEmpty:"هنوز چیزی در حافظه ذخیره نشده.",memoryExample:"مثلاً: من بازی‌سازی با Unreal را دوست دارم",saveMemory:"ذخیره در حافظه",personal:"شخصی",interests:"علایق",work:"کار و پروژه",preferences:"ترجیحات",note:"یادداشت",editTitle:"ویرایش پیام",editAgain:"ویرایش و ارسال دوباره",languageTitle:"انتخاب زبان",ready:"آماده ارسال",openDownload:"برای باز کردن / دانلود کلیک کن",thinkingNow:"Berinzo در حال فکر کردن است",projectCreate:"ساخت پروژه",copyFailed:"کپی انجام نشد.",error:"❌ خطا در ارتباط با هوش مصنوعی.\n\nAPI Key، مدل یا اتصال اینترنت را بررسی کن.",saved:"ذخیره شد. ✅",noResponse:"پاسخی دریافت نشد."}},
+  en:{name:"English",native:"English",dir:"ltr",ui:{language:"Language",memory:"Memory",newChat:"New chat",chats:"Chats",projects:"Projects",newProject:"New project",clearChats:"Clear all chats",online:"Online",placeholder:"Write your message to Berinzo...",image:"Image",video:"Video",audio:"Audio",file:"File",copy:"Copy",edit:"Edit",thinking:"Thinking time",memoryTitle:"Berinzo Memory",memoryHint:"Things you explicitly ask to save, plus useful long-term information, are kept here.",memoryEmpty:"Nothing is saved in memory yet.",memoryExample:"For example: I like game development with Unreal",saveMemory:"Save to memory",personal:"Personal",interests:"Interests",work:"Work & projects",preferences:"Preferences",note:"Note",editTitle:"Edit message",editAgain:"Edit and resend",languageTitle:"Choose language",ready:"Ready to send",openDownload:"Click to open / download",thinkingNow:"Berinzo is thinking",projectCreate:"Create project",copyFailed:"Copy failed.",error:"❌ AI connection error.\n\nCheck the API key, model, or internet connection.",saved:"Saved. ✅",noResponse:"No response received."}},
+  ar:{name:"العربية",native:"العربية",dir:"rtl"},
+  tr:{name:"Türkçe",native:"Türkçe",dir:"ltr"},
+  ru:{name:"Русский",native:"Русский",dir:"ltr"},
+  es:{name:"Español",native:"Español",dir:"ltr"},
+  fr:{name:"Français",native:"Français",dir:"ltr"},
+  de:{name:"Deutsch",native:"Deutsch",dir:"ltr"},
+  it:{name:"Italiano",native:"Italiano",dir:"ltr"},
+  pt:{name:"Português",native:"Português",dir:"ltr"},
+  zh:{name:"中文",native:"中文",dir:"ltr"},
+  ja:{name:"日本語",native:"日本語",dir:"ltr"},
+  ko:{name:"한국어",native:"한국어",dir:"ltr"},
+  hi:{name:"हिन्दी",native:"हिन्दी",dir:"ltr"},
+  ur:{name:"اردو",native:"اردو",dir:"rtl"}
+};
+const UI_FALLBACK={
+  ar:{language:"اللغة",memory:"الذاكرة",newChat:"محادثة جديدة",chats:"المحادثات",projects:"المشاريع",newProject:"إنشاء مشروع جديد",clearChats:"حذف كل المحادثات",online:"متصل",placeholder:"اكتب رسالتك إلى Berinzo...",image:"صورة",video:"فيديو",audio:"صوت",file:"ملف",copy:"نسخ",edit:"تعديل",thinking:"وقت التفكير",memoryTitle:"ذاكرة Berinzo",memoryHint:"يتم الاحتفاظ هنا بما تطلب حفظه والمعلومات المفيدة طويلة المدى.",memoryEmpty:"لا توجد معلومات محفوظة بعد.",memoryExample:"مثال: أحب تطوير الألعاب باستخدام Unreal",saveMemory:"حفظ في الذاكرة",personal:"شخصي",interests:"اهتمامات",work:"العمل والمشاريع",preferences:"التفضيلات",note:"ملاحظة",editTitle:"تعديل الرسالة",editAgain:"تعديل وإعادة الإرسال",languageTitle:"اختر اللغة",ready:"جاهز للإرسال",openDownload:"اضغط للفتح / التنزيل",thinkingNow:"Berinzo يفكر",projectCreate:"إنشاء مشروع",copyFailed:"تعذر النسخ.",saved:"تم الحفظ. ✅",noResponse:"لم يتم استلام رد."},
+  tr:{language:"Dil",memory:"Hafıza",newChat:"Yeni sohbet",chats:"Sohbetler",projects:"Projeler",newProject:"Yeni proje oluştur",clearChats:"Tüm sohbetleri sil",online:"Çevrimiçi",placeholder:"Berinzo'ya mesajını yaz...",image:"Görsel",video:"Video",audio:"Ses",file:"Dosya",copy:"Kopyala",edit:"Düzenle",thinking:"Düşünme süresi",memoryTitle:"Berinzo Hafızası",memoryHint:"Kaydetmesini istediğin ve yararlı kalıcı bilgiler burada tutulur.",memoryEmpty:"Henüz hafızada bir şey yok.",memoryExample:"Örneğin: Unreal ile oyun geliştirmeyi seviyorum",saveMemory:"Hafızaya kaydet",personal:"Kişisel",interests:"İlgi alanları",work:"İş ve projeler",preferences:"Tercihler",note:"Not",editTitle:"Mesajı düzenle",editAgain:"Düzenle ve yeniden gönder",languageTitle:"Dil seç",ready:"Gönderilmeye hazır",openDownload:"Açmak / indirmek için tıkla",thinkingNow:"Berinzo düşünüyor",projectCreate:"Proje oluştur",copyFailed:"Kopyalanamadı.",saved:"Kaydedildi. ✅",noResponse:"Yanıt alınamadı."},
+  ru:{language:"Язык",memory:"Память",newChat:"Новый чат",chats:"Чаты",projects:"Проекты",newProject:"Создать проект",clearChats:"Удалить все чаты",online:"В сети",placeholder:"Напишите сообщение Berinzo...",image:"Изображение",video:"Видео",audio:"Аудио",file:"Файл",copy:"Копировать",edit:"Изменить",thinking:"Время размышления",memoryTitle:"Память Berinzo",memoryHint:"Здесь хранятся данные, которые вы попросили запомнить, и полезная долговременная информация.",memoryEmpty:"Память пока пуста.",memoryExample:"Например: мне нравится разработка игр на Unreal",saveMemory:"Сохранить в памяти",personal:"Личное",interests:"Интересы",work:"Работа и проекты",preferences:"Предпочтения",note:"Заметка",editTitle:"Изменить сообщение",editAgain:"Изменить и отправить снова",languageTitle:"Выберите язык",ready:"Готово к отправке",openDownload:"Нажмите, чтобы открыть / скачать",thinkingNow:"Berinzo думает",projectCreate:"Создать проект",copyFailed:"Не удалось скопировать.",saved:"Сохранено. ✅",noResponse:"Ответ не получен."},
+  es:{language:"Idioma",memory:"Memoria",newChat:"Nuevo chat",chats:"Chats",projects:"Proyectos",newProject:"Crear nuevo proyecto",clearChats:"Borrar todos los chats",online:"En línea",placeholder:"Escribe tu mensaje a Berinzo...",image:"Imagen",video:"Vídeo",audio:"Audio",file:"Archivo",copy:"Copiar",edit:"Editar",thinking:"Tiempo de pensamiento",memoryTitle:"Memoria de Berinzo",memoryHint:"Aquí se guarda lo que pides recordar y la información útil a largo plazo.",memoryEmpty:"Aún no hay nada en la memoria.",memoryExample:"Por ejemplo: me gusta desarrollar juegos con Unreal",saveMemory:"Guardar en memoria",personal:"Personal",interests:"Intereses",work:"Trabajo y proyectos",preferences:"Preferencias",note:"Nota",editTitle:"Editar mensaje",editAgain:"Editar y reenviar",languageTitle:"Elegir idioma",ready:"Listo para enviar",openDownload:"Haz clic para abrir / descargar",thinkingNow:"Berinzo está pensando",projectCreate:"Crear proyecto",copyFailed:"No se pudo copiar.",saved:"Guardado. ✅",noResponse:"No se recibió respuesta."},
+  fr:{language:"Langue",memory:"Mémoire",newChat:"Nouveau chat",chats:"Chats",projects:"Projets",newProject:"Créer un projet",clearChats:"Supprimer tous les chats",online:"En ligne",placeholder:"Écrivez votre message à Berinzo...",image:"Image",video:"Vidéo",audio:"Audio",file:"Fichier",copy:"Copier",edit:"Modifier",thinking:"Temps de réflexion",memoryTitle:"Mémoire de Berinzo",memoryHint:"Les informations que vous demandez de mémoriser et les informations utiles à long terme sont conservées ici.",memoryEmpty:"La mémoire est encore vide.",memoryExample:"Par exemple : j'aime créer des jeux avec Unreal",saveMemory:"Enregistrer en mémoire",personal:"Personnel",interests:"Centres d’intérêt",work:"Travail et projets",preferences:"Préférences",note:"Note",editTitle:"Modifier le message",editAgain:"Modifier et renvoyer",languageTitle:"Choisir la langue",ready:"Prêt à envoyer",openDownload:"Cliquez pour ouvrir / télécharger",thinkingNow:"Berinzo réfléchit",projectCreate:"Créer le projet",copyFailed:"Copie impossible.",saved:"Enregistré. ✅",noResponse:"Aucune réponse reçue."},
+  de:{language:"Sprache",memory:"Speicher",newChat:"Neuer Chat",chats:"Chats",projects:"Projekte",newProject:"Neues Projekt erstellen",clearChats:"Alle Chats löschen",online:"Online",placeholder:"Schreibe deine Nachricht an Berinzo...",image:"Bild",video:"Video",audio:"Audio",file:"Datei",copy:"Kopieren",edit:"Bearbeiten",thinking:"Denkzeit",memoryTitle:"Berinzo-Speicher",memoryHint:"Hier werden Dinge gespeichert, die du ausdrücklich merken lassen möchtest, sowie nützliche dauerhafte Informationen.",memoryEmpty:"Noch nichts gespeichert.",memoryExample:"Zum Beispiel: Ich entwickle gerne Spiele mit Unreal",saveMemory:"Im Speicher sichern",personal:"Persönlich",interests:"Interessen",work:"Arbeit & Projekte",preferences:"Einstellungen",note:"Notiz",editTitle:"Nachricht bearbeiten",editAgain:"Bearbeiten und erneut senden",languageTitle:"Sprache auswählen",ready:"Bereit zum Senden",openDownload:"Zum Öffnen / Herunterladen klicken",thinkingNow:"Berinzo denkt nach",projectCreate:"Projekt erstellen",copyFailed:"Kopieren fehlgeschlagen.",saved:"Gespeichert. ✅",noResponse:"Keine Antwort erhalten."},
+  it:{language:"Lingua",memory:"Memoria",newChat:"Nuova chat",chats:"Chat",projects:"Progetti",newProject:"Crea nuovo progetto",clearChats:"Elimina tutte le chat",online:"Online",placeholder:"Scrivi il tuo messaggio a Berinzo...",image:"Immagine",video:"Video",audio:"Audio",file:"File",copy:"Copia",edit:"Modifica",thinking:"Tempo di pensiero",memoryTitle:"Memoria di Berinzo",memoryHint:"Qui vengono conservate le informazioni che chiedi di ricordare e quelle utili nel tempo.",memoryEmpty:"La memoria è ancora vuota.",memoryExample:"Ad esempio: mi piace sviluppare giochi con Unreal",saveMemory:"Salva in memoria",personal:"Personale",interests:"Interessi",work:"Lavoro e progetti",preferences:"Preferenze",note:"Nota",editTitle:"Modifica messaggio",editAgain:"Modifica e invia di nuovo",languageTitle:"Scegli lingua",ready:"Pronto per l'invio",openDownload:"Clicca per aprire / scaricare",thinkingNow:"Berinzo sta pensando",projectCreate:"Crea progetto",copyFailed:"Impossibile copiare.",saved:"Salvato. ✅",noResponse:"Nessuna risposta ricevuta."},
+  pt:{language:"Idioma",memory:"Memória",newChat:"Novo chat",chats:"Chats",projects:"Projetos",newProject:"Criar novo projeto",clearChats:"Apagar todos os chats",online:"Online",placeholder:"Escreva sua mensagem para Berinzo...",image:"Imagem",video:"Vídeo",audio:"Áudio",file:"Arquivo",copy:"Copiar",edit:"Editar",thinking:"Tempo de pensamento",memoryTitle:"Memória do Berinzo",memoryHint:"Aqui ficam as informações que você pede para lembrar e dados úteis de longo prazo.",memoryEmpty:"Ainda não há nada na memória.",memoryExample:"Por exemplo: gosto de desenvolver jogos com Unreal",saveMemory:"Salvar na memória",personal:"Pessoal",interests:"Interesses",work:"Trabalho e projetos",preferences:"Preferências",note:"Nota",editTitle:"Editar mensagem",editAgain:"Editar e enviar novamente",languageTitle:"Escolher idioma",ready:"Pronto para enviar",openDownload:"Clique para abrir / baixar",thinkingNow:"Berinzo está pensando",projectCreate:"Criar projeto",copyFailed:"Não foi possível copiar.",saved:"Salvo. ✅",noResponse:"Nenhuma resposta recebida."},
+  zh:{language:"语言",memory:"记忆",newChat:"新聊天",chats:"聊天",projects:"项目",newProject:"创建新项目",clearChats:"删除所有聊天",online:"在线",placeholder:"给 Berinzo 写消息...",image:"图片",video:"视频",audio:"音频",file:"文件",copy:"复制",edit:"编辑",thinking:"思考时间",memoryTitle:"Berinzo 记忆",memoryHint:"你要求保存的内容以及有用的长期信息会保存在这里。",memoryEmpty:"记忆中还没有内容。",memoryExample:"例如：我喜欢用 Unreal 开发游戏",saveMemory:"保存到记忆",personal:"个人",interests:"兴趣",work:"工作与项目",preferences:"偏好",note:"备注",editTitle:"编辑消息",editAgain:"编辑并重新发送",languageTitle:"选择语言",ready:"准备发送",openDownload:"点击打开 / 下载",thinkingNow:"Berinzo 正在思考",projectCreate:"创建项目",copyFailed:"复制失败。",saved:"已保存。 ✅",noResponse:"没有收到回复。"},
+  ja:{language:"言語",memory:"メモリ",newChat:"新しいチャット",chats:"チャット",projects:"プロジェクト",newProject:"新しいプロジェクト",clearChats:"すべてのチャットを削除",online:"オンライン",placeholder:"Berinzoへのメッセージを書く...",image:"画像",video:"動画",audio:"音声",file:"ファイル",copy:"コピー",edit:"編集",thinking:"思考時間",memoryTitle:"Berinzo メモリ",memoryHint:"保存を依頼した内容や、役立つ長期的な情報をここに保存します。",memoryEmpty:"メモリにはまだ何もありません。",memoryExample:"例：Unrealでゲーム開発をするのが好きです",saveMemory:"メモリに保存",personal:"個人",interests:"興味",work:"仕事とプロジェクト",preferences:"設定",note:"メモ",editTitle:"メッセージを編集",editAgain:"編集して再送信",languageTitle:"言語を選択",ready:"送信準備完了",openDownload:"クリックして開く / ダウンロード",thinkingNow:"Berinzoが考えています",projectCreate:"プロジェクトを作成",copyFailed:"コピーできませんでした。",saved:"保存しました。 ✅",noResponse:"回答を受信できませんでした。"},
+  ko:{language:"언어",memory:"메모리",newChat:"새 채팅",chats:"채팅",projects:"프로젝트",newProject:"새 프로젝트 만들기",clearChats:"모든 채팅 삭제",online:"온라인",placeholder:"Berinzo에게 메시지를 입력하세요...",image:"이미지",video:"동영상",audio:"오디오",file:"파일",copy:"복사",edit:"편집",thinking:"생각한 시간",memoryTitle:"Berinzo 메모리",memoryHint:"저장해 달라고 요청한 내용과 유용한 장기 정보가 여기에 저장됩니다.",memoryEmpty:"아직 메모리에 저장된 내용이 없습니다.",memoryExample:"예: Unreal로 게임 개발하는 것을 좋아합니다",saveMemory:"메모리에 저장",personal:"개인",interests:"관심사",work:"업무 및 프로젝트",preferences:"환경설정",note:"메모",editTitle:"메시지 편집",editAgain:"편집 후 다시 보내기",languageTitle:"언어 선택",ready:"보낼 준비 완료",openDownload:"클릭하여 열기 / 다운로드",thinkingNow:"Berinzo가 생각 중입니다",projectCreate:"프로젝트 만들기",copyFailed:"복사하지 못했습니다.",saved:"저장되었습니다. ✅",noResponse:"응답을 받지 못했습니다."},
+  hi:{language:"भाषा",memory:"मेमोरी",newChat:"नई चैट",chats:"चैट",projects:"प्रोजेक्ट",newProject:"नया प्रोजेक्ट बनाएं",clearChats:"सभी चैट हटाएं",online:"ऑनलाइन",placeholder:"Berinzo को अपना संदेश लिखें...",image:"चित्र",video:"वीडियो",audio:"ऑडियो",file:"फ़ाइल",copy:"कॉपी",edit:"संपादित करें",thinking:"सोचने का समय",memoryTitle:"Berinzo मेमोरी",memoryHint:"आपके द्वारा सेव करने को कही गई बातें और उपयोगी दीर्घकालिक जानकारी यहां रखी जाती है।",memoryEmpty:"मेमोरी में अभी कुछ नहीं है।",memoryExample:"उदाहरण: मुझे Unreal के साथ गेम बनाना पसंद है",saveMemory:"मेमोरी में सेव करें",personal:"व्यक्तिगत",interests:"रुचियां",work:"काम और प्रोजेक्ट",preferences:"पसंद",note:"नोट",editTitle:"संदेश संपादित करें",editAgain:"संपादित करके फिर भेजें",languageTitle:"भाषा चुनें",ready:"भेजने के लिए तैयार",openDownload:"खोलने / डाउनलोड करने के लिए क्लिक करें",thinkingNow:"Berinzo सोच रहा है",projectCreate:"प्रोजेक्ट बनाएं",copyFailed:"कॉपी नहीं हो सका।",saved:"सेव किया गया। ✅",noResponse:"कोई उत्तर नहीं मिला।"},
+  ur:{language:"زبان",memory:"یادداشت",newChat:"نئی چیٹ",chats:"چیٹس",projects:"پروجیکٹس",newProject:"نیا پروجیکٹ بنائیں",clearChats:"تمام چیٹس حذف کریں",online:"آن لائن",placeholder:"Berinzo کو اپنا پیغام لکھیں...",image:"تصویر",video:"ویڈیو",audio:"آڈیو",file:"فائل",copy:"کاپی",edit:"ترمیم",thinking:"سوچنے کا وقت",memoryTitle:"Berinzo میموری",memoryHint:"آپ کی محفوظ کرنے کی درخواستیں اور مفید مستقل معلومات یہاں رکھی جاتی ہیں۔",memoryEmpty:"ابھی میموری میں کچھ محفوظ نہیں۔",memoryExample:"مثلاً: مجھے Unreal کے ساتھ گیم بنانا پسند ہے",saveMemory:"میموری میں محفوظ کریں",personal:"ذاتی",interests:"دلچسپیاں",work:"کام اور پروجیکٹس",preferences:"ترجیحات",note:"نوٹ",editTitle:"پیغام میں ترمیم",editAgain:"ترمیم کرکے دوبارہ بھیجیں",languageTitle:"زبان منتخب کریں",ready:"بھیجنے کے لیے تیار",openDownload:"کھولنے / ڈاؤن لوڈ کرنے کے لیے کلک کریں",thinkingNow:"Berinzo سوچ رہا ہے",projectCreate:"پروجیکٹ بنائیں",copyFailed:"کاپی نہیں ہو سکی۔",saved:"محفوظ ہوگیا۔ ✅",noResponse:"جواب موصول نہیں ہوا۔"}
+};
+for(const k of Object.keys(LANGUAGE_DATA)){if(!LANGUAGE_DATA[k].ui) LANGUAGE_DATA[k].ui=UI_FALLBACK[k]||LANGUAGE_DATA.en.ui;}
+const FILE_ACTION_I18N={
+  fa:{openFileTitle:"فایل",actionQuestion:"می‌خواهید با این فایل چه کار کنید؟",openFile:"باز کردن",downloadFile:"دانلود",cancel:"لغو",chooseAppTitle:"انتخاب برنامه",chooseAppQuestion:"با کدام برنامه می‌خواهید فایل را باز کنید؟",browser:"مرورگر",chooseApp:"انتخاب برنامه از دستگاه"},
+  en:{openFileTitle:"File",actionQuestion:"What would you like to do with this file?",openFile:"Open",downloadFile:"Download",cancel:"Cancel",chooseAppTitle:"Choose an app",chooseAppQuestion:"Which app would you like to use to open this file?",browser:"Browser",chooseApp:"Choose an app on device"},
+  ar:{openFileTitle:"ملف",openFile:"فتح",downloadFile:"تنزيل",cancel:"إلغاء"},
+  tr:{openFileTitle:"Dosya",openFile:"Aç",downloadFile:"İndir",cancel:"İptal"},
+  ru:{openFileTitle:"Файл",openFile:"Открыть",downloadFile:"Скачать",cancel:"Отмена"},
+  es:{openFileTitle:"Archivo",openFile:"Abrir",downloadFile:"Descargar",cancel:"Cancelar"},
+  fr:{openFileTitle:"Fichier",openFile:"Ouvrir",downloadFile:"Télécharger",cancel:"Annuler"},
+  de:{openFileTitle:"Datei",openFile:"Öffnen",downloadFile:"Herunterladen",cancel:"Abbrechen"},
+  it:{openFileTitle:"File",openFile:"Apri",downloadFile:"Scarica",cancel:"Annulla"},
+  pt:{openFileTitle:"Arquivo",openFile:"Abrir",downloadFile:"Baixar",cancel:"Cancelar"},
+  zh:{openFileTitle:"文件",openFile:"打开",downloadFile:"下载",cancel:"取消"},
+  ja:{openFileTitle:"ファイル",openFile:"開く",downloadFile:"ダウンロード",cancel:"キャンセル"},
+  ko:{openFileTitle:"파일",openFile:"열기",downloadFile:"다운로드",cancel:"취소"},
+  hi:{openFileTitle:"फ़ाइल",openFile:"खोलें",downloadFile:"डाउनलोड",cancel:"रद्द करें"},
+  ur:{openFileTitle:"فائل",openFile:"کھولیں",downloadFile:"ڈاؤن لوڈ",cancel:"منسوخ"}
+};
+
+function fileActionLang(){
+    const base=FILE_ACTION_I18N.en;
+    return Object.assign({},base,FILE_ACTION_I18N[currentLanguage]||{});
+}
+
+let currentLanguage=localStorage.getItem("berinzo_language")||"fa";
+function lang(){return LANGUAGE_DATA[currentLanguage]?.ui||LANGUAGE_DATA.fa.ui;}
+function setLangText(selector,key){const el=document.querySelector(selector);if(el&&lang()[key]!=null)el.textContent=lang()[key];}
+function setLangHTML(selector,key){const el=document.querySelector(selector);if(el&&lang()[key]!=null)el.innerHTML=lang()[key];}
+function setLangPlaceholder(selector,key){const el=document.querySelector(selector);if(el&&lang()[key]!=null)el.placeholder=lang()[key];}
+function applyLanguage(){
+    const L=lang();
+    document.documentElement.lang=currentLanguage;
+    document.documentElement.dir=LANGUAGE_DATA[currentLanguage]?.dir||"ltr";
+    document.body.dir=LANGUAGE_DATA[currentLanguage]?.dir||"ltr";
+    setLangHTML(".newChat","newChat");
+    setLangText("#chatTab","chats"); setLangText("#projectTab","projects");
+    setLangHTML(".projectCreateBtn","newProject");
+    setLangText("#languageMenuLabel","language"); setLangText("#memoryMenuLabel","memory");
+    const clear=document.querySelector(".sideBottom button:last-child"); if(clear) clear.childNodes[clear.childNodes.length-1].textContent=" "+L.clearChats;
+    setLangText(".chatStatus","online"); setLangPlaceholder("#messageInput","placeholder");
+    const memoryTitle=document.querySelector("#memoryModal h2"); if(memoryTitle) memoryTitle.textContent="🧠 "+L.memoryTitle; setLangText("#languageModalTitle","languageTitle");
+    setLangText(".behaviorHint","memoryHint"); setLangText(".memoryEmpty","memoryEmpty");
+    const mi=document.getElementById("memoryTextInput"); if(mi) mi.placeholder=L.memoryExample;
+    const save=document.querySelector("#memoryModal .primaryBtn"); if(save) save.textContent=L.saveMemory;
+    setLangText("#editMessageModal h2","editTitle"); setLangText("#saveEditBtn","editAgain");
+    const catSelect=document.getElementById("memoryCategoryInput");
+    if(catSelect){ const vals=["personal","interests","work","preferences","note"]; Array.from(catSelect.options).forEach((o,i)=>{if(vals[i]) o.textContent=L[vals[i]];}); }
+    renderMemoryList(); renderLanguageList(); render(); refreshUIIcons();
+}
+function openLanguage(){renderLanguageList();document.getElementById("languageModal").classList.add("show");closeMenu();}
+function closeLanguage(){document.getElementById("languageModal").classList.remove("show");}
+function renderLanguageList(){
+    const box=document.getElementById("languageList"); if(!box)return;
+    box.innerHTML=Object.entries(LANGUAGE_DATA).map(([code,l])=>`<button class="languageOption ${code===currentLanguage?"active":""}" onclick="selectLanguage('${code}')"><span>${escapeHTML(l.native)}</span><small>${escapeHTML(l.name)}</small></button>`).join("");
+}
+function selectLanguage(code){
+    if(!LANGUAGE_DATA[code])return;
+    currentLanguage=code; localStorage.setItem("berinzo_language",code); applyLanguage(); closeLanguage();
+}
+
+/* =====================================================
+STORAGE
+===================================================== */
+
+function saveChats(){
+
+    localStorage.setItem(
+        "berinzo_chats",
+        JSON.stringify(chats)
+    );
+}
+
+
+function saveProjects(){
+
+    localStorage.setItem(
+        "berinzo_projects",
+        JSON.stringify(projects)
+    );
+}
+
+function saveMemories(){
+    localStorage.setItem("berinzo_memories", JSON.stringify(memories));
+}
+
+function addMemory(text, category="یادداشت"){
+    const value=String(text||"").trim();
+    if(!value) return;
+    memories.unshift({id:Date.now().toString()+Math.random(), text:value, category, createdAt:Date.now()});
+    saveMemories();
+}
+
+function openMemory(){
+    renderMemoryList();
+    document.getElementById("memoryModal").classList.add("show");
+    closeMenu();
+}
+
+function closeMemory(){
+    document.getElementById("memoryModal").classList.remove("show");
+}
+
+function renderMemoryList(){
+    const list=document.getElementById("memoryList");
+    if(!memories.length){list.innerHTML=`<div class="memoryEmpty">${escapeHTML(lang().memoryEmpty)}</div>`;return;}
+    list.innerHTML=memories.map((m,i)=>`<div class="memoryItem"><button class="memoryDelete" onclick="deleteMemory(${i})">×</button><div class="memoryCategory">${escapeHTML(m.category||lang().note)}</div><div class="memoryText">${escapeHTML(m.text)}</div></div>`).join("");
+}
+
+function deleteMemory(index){
+    memories.splice(index,1); saveMemories(); renderMemoryList();
+}
+
+function addMemoryFromUI(){
+    const input=document.getElementById("memoryTextInput");
+    const cat=document.getElementById("memoryCategoryInput");
+    if(!input.value.trim()) return;
+    addMemory(input.value,cat.value); input.value=""; renderMemoryList();
+}
+
+
+/* =====================================================
+TAB
+===================================================== */
+
+function switchTab(tab){
+
+    const chatTab =
+        document.getElementById(
+            "chatTab"
+        );
+
+    const projectTab =
+        document.getElementById(
+            "projectTab"
+        );
+
+    const chatsContent =
+        document.getElementById(
+            "chatsContent"
+        );
+
+    const projectsContent =
+        document.getElementById(
+            "projectsContent"
+        );
+
+
+    if(tab==="chats"){
+
+        chatTab.classList.add(
+            "active"
+        );
+
+        projectTab.classList.remove(
+            "active"
+        );
+
+        chatsContent.classList.remove(
+            "hidden"
+        );
+
+        projectsContent.classList.add(
+            "hidden"
+        );
+
+    }else{
+
+        chatTab.classList.remove(
+            "active"
+        );
+
+        projectTab.classList.add(
+            "active"
+        );
+
+        chatsContent.classList.add(
+            "hidden"
+        );
+
+        projectsContent.classList.remove(
+            "hidden"
+        );
+
+        renderProjects();
+    }
+}
+
+
+/* =====================================================
+CHAT
+===================================================== */
+
+function createDefaultChat(){
+
+    const chat={
+
+        id:
+            Date.now().toString(),
+
+        title:
+            "چت جدید",
+
+        pinned:false,
+
+        projectId:null,
+
+        createdAt:
+            Date.now(),
+
+        messages:[
+
+            {
+                role:"assistant",
+
+                content:
+                    "سلام، من Berinzo هستم. چه کمکی ازم می‌خوای؟"
+            }
+
+        ]
+
+    };
+
+
+    chats.unshift(chat);
+
+    currentChatId=
+        chat.id;
+
+    saveChats();
+}
+
+
+function newChat(){
+
+    const chat={
+
+        id:
+            Date.now().toString(),
+
+        title:
+            "چت جدید",
+
+        pinned:false,
+
+        projectId:null,
+
+        createdAt:
+            Date.now(),
+
+        messages:[
+
+            {
+                role:"assistant",
+
+                content:
+                    "چت جدید آماده‌ست."
+            }
+
+        ]
+
+    };
+
+
+    chats.unshift(chat);
+
+    currentChatId=
+        chat.id;
+
+    saveChats();
+
+    switchTab("chats");
+
+    render();
+
+    closeMenu();
+}
+
+
+function getCurrentChat(){
+
+    return chats.find(
+        c =>
+        c.id===currentChatId
+    );
+}
+
+
+/* =====================================================
+PIN
+===================================================== */
+
+function togglePin(id){
+
+    const chat =
+        chats.find(
+            c=>c.id===id
+        );
+
+    if(!chat)
+        return;
+
+    chat.pinned =
+        !chat.pinned;
+
+    saveChats();
+
+    renderChatList();
+}
+
+
+function sortChats(){
+
+    return [...chats].sort(
+        (a,b)=>{
+
+            if(
+                a.pinned &&
+                !b.pinned
+            )
+                return -1;
+
+            if(
+                !a.pinned &&
+                b.pinned
+            )
+                return 1;
+
+            return
+                b.createdAt -
+                a.createdAt;
+        }
+    );
+}
+
+
+/* =====================================================
+CHAT LIST
+===================================================== */
+
+function renderChatList(){
+
+    const list =
+        document.getElementById(
+            "chatList"
+        );
+
+    list.innerHTML="";
+
+
+    const sorted =
+        sortChats();
+
+
+    if(!sorted.length){
+
+        list.innerHTML=
+        `
+        <div class="sectionTitle">
+            هنوز چتی نداری.
+        </div>
+        `;
+
+        return;
+    }
+
+
+    const pinned =
+        sorted.filter(
+            c=>c.pinned
+        );
+
+    const normal =
+        sorted.filter(
+            c=>!c.pinned
+        );
+
+
+    if(pinned.length){
+
+        const title =
+            document.createElement(
+                "div"
+            );
+
+        title.className=
+            "sectionTitle";
+
+        title.textContent=
+            "📌 پین‌شده‌ها";
+
+        list.appendChild(title);
+
+
+        pinned.forEach(
+            c=>
+            addChatItem(
+                c,
+                list
+            )
+        );
+    }
+
+
+    if(normal.length){
+
+        const title =
+            document.createElement(
+                "div"
+            );
+
+        title.className=
+            "sectionTitle";
+
+        title.textContent=
+            "چت‌ها";
+
+        list.appendChild(title);
+
+
+        normal.forEach(
+            c=>
+            addChatItem(
+                c,
+                list
+            )
+        );
+    }
+}
+
+
+function addChatItem(
+    chat,
+    list
+){
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+
+    item.className=
+        "item " +
+        (
+            chat.id===currentChatId
+            ? "active"
+            : ""
+        );
+
+
+    item.onclick=()=>{
+
+        currentChatId=
+            chat.id;
+
+        render();
+
+        closeMenu();
+    };
+
+
+    let pin="";
+
+
+    if(chat.pinned){
+
+        pin=`
+        <svg
+            class="pinMark"
+            viewBox="0 0 24 24">
+
+            <path d="
+            M14 2
+            8 8
+            l2 2
+            -5 5
+            4 1
+            1 4
+            5-5
+            2 2
+            6-6
+            -9-9z"/>
+
+        </svg>
+        `;
+    }
+
+
+    item.innerHTML=`
+
+        ${pin}
+
+        <div class="itemTitle">
+            ${escapeHTML(chat.title)}
+        </div>
+
+        <div class="itemDate">
+
+            ${new Date(
+                chat.createdAt
+            ).toLocaleDateString(
+                "fa-IR"
+            )}
+
+        </div>
+
+        <div class="itemTools">
+
+            <button
+                class="iconBtn"
+                title="${
+                    chat.pinned
+                    ? "برداشتن پین"
+                    : "پین کردن"
+                }"
+                onclick="
+                    event.stopPropagation();
+                    togglePin('${chat.id}');
+                ">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="
+                    M14 2
+                    8 8
+                    l2 2
+                    -5 5
+                    4 1
+                    1 4
+                    5-5
+                    2 2
+                    6-6
+                    -9-9z"/>
+
+                </svg>
+
+            </button>
+
+
+            <button
+                class="iconBtn"
+                title="ویرایش"
+                onclick="
+                    event.stopPropagation();
+                    renameChat('${chat.id}');
+                ">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="
+                    M4 20
+                    h4
+                    L19 9
+                    l-4-4
+                    L4 16
+                    v4z"/>
+
+                    <path d="
+                    m13 6
+                    4 4"/>
+
+                </svg>
+
+            </button>
+
+
+            <button
+                class="iconBtn delete"
+                title="حذف"
+                onclick="
+                    event.stopPropagation();
+                    deleteChat('${chat.id}');
+                ">
+
+                <svg viewBox="0 0 24 24">
+
+                    <path d="M4 7h16"/>
+                    <path d="M9 7V4h6v3"/>
+                    <path d="M7 7l1 14h8l1-14"/>
+                    <path d="M10 11v5"/>
+                    <path d="M14 11v5"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+    `;
+
+
+    list.appendChild(item);
+}
+
+
+/* =====================================================
+RENAME
+===================================================== */
+
+function renameChat(id){
+
+    const chat =
+        chats.find(
+            c=>c.id===id
+        );
+
+    if(!chat)
+        return;
+
+
+    const name =
+        prompt(
+            "نام جدید چت:",
+            chat.title
+        );
+
+
+    if(
+        name &&
+        name.trim()
+    ){
+
+        chat.title=
+            name.trim();
+
+        saveChats();
+
+        render();
+    }
+}
+
+
+/* =====================================================
+DELETE
+===================================================== */
+
+function deleteChat(id){
+
+    if(
+        !confirm(
+            "این چت حذف شود؟"
+        )
+    )
+        return;
+
+
+    chats =
+        chats.filter(
+            c=>c.id!==id
+        );
+
+
+    if(
+        currentChatId===id
+    ){
+
+        if(chats.length){
+
+            currentChatId=
+                chats[0].id;
+
+        }else{
+
+            createDefaultChat();
+        }
+    }
+
+
+    saveChats();
+
+    render();
+}
+
+
+/* =====================================================
+CLEAR
+===================================================== */
+
+function clearChats(){
+
+    if(!chats.length)
+        return;
+
+
+    if(
+        !confirm(
+            "همه چت‌ها حذف شوند؟"
+        )
+    )
+        return;
+
+
+    chats=[];
+
+    createDefaultChat();
+
+    saveChats();
+
+    render();
+}
+
+
+/* =====================================================
+PROJECT CREATE
+===================================================== */
+
+function openCreateProject(){
+
+    document
+        .getElementById(
+            "createProjectModal"
+        )
+        .classList.add(
+            "show"
+        );
+}
+
+
+function closeCreateProject(){
+
+    document
+        .getElementById(
+            "createProjectModal"
+        )
+        .classList.remove(
+            "show"
+        );
+}
+
+
+function createProject(){
+
+    const name =
+        document
+            .getElementById(
+                "projectNameInput"
+            )
+            .value.trim();
+
+
+    const description =
+        document
+            .getElementById(
+                "projectDescriptionInput"
+            )
+            .value.trim();
+
+
+    if(!name){
+
+        alert(
+            "نام پروژه را وارد کن."
+        );
+
+        return;
+    }
+
+
+    const project={
+
+        id:
+            Date.now().toString(),
+
+        name:
+            name,
+
+        description:
+            description ||
+            "بدون توضیح",
+
+        createdAt:
+            Date.now(),
+
+        behavior:{
+
+            instructions:
+                "",
+
+            friendly:
+                70,
+
+            detail:
+                60,
+
+            creative:
+                70
+        }
+
+    };
+
+
+    projects.unshift(
+        project
+    );
+
+
+    saveProjects();
+
+
+    document
+        .getElementById(
+            "projectNameInput"
+        )
+        .value="";
+
+
+    document
+        .getElementById(
+            "projectDescriptionInput"
+        )
+        .value="";
+
+
+    closeCreateProject();
+
+    renderProjects();
+}
+
+
+/* =====================================================
+PROJECT LIST
+===================================================== */
+
+function renderProjects(){
+
+    const list =
+        document.getElementById(
+            "projectList"
+        );
+
+
+    list.innerHTML="";
+
+
+    if(!projects.length){
+
+        list.innerHTML=`
+
+        <div class="sectionTitle">
+            هنوز پروژه‌ای نساختی.
+        </div>
+
+        `;
+
+        return;
+    }
+
+
+    projects.forEach(
+        project=>{
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className=
+                "projectCard";
+
+
+            card.innerHTML=`
+
+                <div class="projectName">
+
+                    <span class="menuIcon" data-icon="file"></span>
+                    ${escapeHTML(
+                        project.name
+                    )}
+
+                </div>
+
+
+                <div class="projectDesc">
+
+                    ${escapeHTML(
+                        project.description
+                    )}
+
+                </div>
+
+
+                <div class="projectButtons">
+
+                    <button
+                        onclick="
+                            createProjectChat(
+                                '${project.id}'
+                            )
+                        ">
+
+                        چت
+
+                    </button>
+
+
+                    <button
+                        onclick="
+                            openBehavior(
+                                '${project.id}'
+                            )
+                        ">
+
+                        اخلاق
+
+                    </button>
+
+
+                    <button
+                        class="danger"
+                        onclick="
+                            deleteProject(
+                                '${project.id}'
+                            )
+                        ">
+
+                        حذف
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            list.appendChild(
+                card
+            );
+        }
+    );
+}
+
+
+/* =====================================================
+PROJECT CHAT
+===================================================== */
+
+function createProjectChat(
+    projectId
+){
+
+    const project =
+        projects.find(
+            p=>p.id===projectId
+        );
+
+
+    if(!project)
+        return;
+
+
+    const chat={
+
+        id:
+            Date.now().toString(),
+
+        title:
+            project.name,
+
+        pinned:false,
+
+        projectId:
+            project.id,
+
+        createdAt:
+            Date.now(),
+
+        messages:[
+
+            {
+                role:"assistant",
+
+                content:
+                    "سلام،\n" +
+                    "این چت مخصوص پروژه «" +
+                    project.name +
+                    "» است."
+            }
+
+        ]
+
+    };
+
+
+    chats.unshift(chat);
+
+    currentChatId=
+        chat.id;
+
+    saveChats();
+
+    switchTab("chats");
+
+    render();
+
+    closeMenu();
+}
+
+
+/* =====================================================
+DELETE PROJECT
+===================================================== */
+
+function deleteProject(id){
+
+    if(
+        !confirm(
+            "پروژه حذف شود؟\n\n" +
+            "چت‌های قبلی این پروژه باقی می‌مانند."
+        )
+    )
+        return;
+
+
+    projects =
+        projects.filter(
+            p=>p.id!==id
+        );
+
+
+    saveProjects();
+
+    renderProjects();
+}
+
+
+/* =====================================================
+BEHAVIOR
+===================================================== */
+
+function openBehavior(
+    projectId
+){
+
+    const project =
+        projects.find(
+            p=>p.id===projectId
+        );
+
+
+    if(!project)
+        return;
+
+
+    behaviorProjectId=
+        projectId;
+
+
+    const b =
+        project.behavior || {};
+
+
+    document
+        .getElementById(
+            "behaviorTitle"
+        )
+        .textContent =
+            "اخلاق و رفتار: " +
+            project.name;
+
+
+    document
+        .getElementById(
+            "behaviorInstructions"
+        )
+        .value =
+            b.instructions || "";
+
+
+    const friendly =
+        Number(
+            b.friendly ?? 70
+        );
+
+
+    const detail =
+        Number(
+            b.detail ?? 60
+        );
+
+
+    const creative =
+        Number(
+            b.creative ?? 70
+        );
+
+
+    document
+        .getElementById(
+            "friendlyRange"
+        )
+        .value =
+            friendly;
+
+
+    document
+        .getElementById(
+            "detailRange"
+        )
+        .value =
+            detail;
+
+
+    document
+        .getElementById(
+            "creativeRange"
+        )
+        .value =
+            creative;
+
+
+    document
+        .getElementById(
+            "friendlyValue"
+        )
+        .textContent =
+            friendly+"%";
+
+
+    document
+        .getElementById(
+            "detailValue"
+        )
+        .textContent =
+            detail+"%";
+
+
+    document
+        .getElementById(
+            "creativeValue"
+        )
+        .textContent =
+            creative+"%";
+
+
+    document
+        .getElementById(
+            "behaviorModal"
+        )
+        .classList.add(
+            "show"
+        );
+}
+
+
+function closeBehavior(){
+
+    document
+        .getElementById(
+            "behaviorModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+    behaviorProjectId=
+        null;
+}
+
+
+/* =====================================================
+SAVE BEHAVIOR
+===================================================== */
+
+function saveBehavior(){
+
+    if(!behaviorProjectId)
+        return;
+
+
+    const project =
+        projects.find(
+            p=>p.id===behaviorProjectId
+        );
+
+
+    if(!project)
+        return;
+
+
+    project.behavior={
+
+        instructions:
+            document
+                .getElementById(
+                    "behaviorInstructions"
+                )
+                .value.trim(),
+
+        friendly:
+            Number(
+                document
+                    .getElementById(
+                        "friendlyRange"
+                    ).value
+            ),
+
+        detail:
+            Number(
+                document
+                    .getElementById(
+                        "detailRange"
+                    ).value
+            ),
+
+        creative:
+            Number(
+                document
+                    .getElementById(
+                        "creativeRange"
+                    ).value
+            )
+
+    };
+
+
+    saveProjects();
+
+    closeBehavior();
+
+    alert(
+        "رفتار پروژه ذخیره شد ✅"
+    );
+}
+
+
+/* =====================================================
+REAL PROJECT BEHAVIOR
+===================================================== */
+
+function buildBehaviorInstructions(
+    project
+){
+
+    const b =
+        project.behavior || {};
+
+
+    const friendly =
+        Number(
+            b.friendly ?? 70
+        );
+
+
+    const detail =
+        Number(
+            b.detail ?? 60
+        );
+
+
+    const creative =
+        Number(
+            b.creative ?? 70
+        );
+
+
+    let friendlyText;
+
+
+    if(friendly<25){
+
+        friendlyText=
+            "Use a formal and professional tone.";
+
+    }else if(friendly<50){
+
+        friendlyText=
+            "Use a polite and slightly formal tone.";
+
+    }else if(friendly<75){
+
+        friendlyText=
+            "Use a friendly and natural conversational tone.";
+
+    }else{
+
+        friendlyText=
+            "Use a very warm, casual and friendly conversational tone.";
+
+    }
+
+
+    let detailText;
+
+
+    if(detail<25){
+
+        detailText=
+            "Keep answers very short and focus on essential information.";
+
+    }else if(detail<50){
+
+        detailText=
+            "Keep answers concise but explain important points.";
+
+    }else if(detail<75){
+
+        detailText=
+            "Give moderately detailed answers and useful explanations.";
+
+    }else{
+
+        detailText=
+            "Give detailed answers with explanations, steps and examples when useful.";
+
+    }
+
+
+    let creativeText;
+
+
+    if(creative<25){
+
+        creativeText=
+            "Prefer conventional and practical solutions.";
+
+    }else if(creative<50){
+
+        creativeText=
+            "Use some creativity when it improves the answer.";
+
+    }else if(creative<75){
+
+        creativeText=
+            "Use creative ideas when appropriate while remaining practical.";
+
+    }else{
+
+        creativeText=
+            "Be highly creative and suggest original useful ideas when appropriate.";
+
+    }
+
+
+    return `
+
+PROJECT:
+${project.name}
+
+PROJECT BEHAVIOR:
+
+Tone:
+${friendlyText}
+
+Detail:
+${detailText}
+
+Creativity:
+${creativeText}
+
+Custom project instructions:
+${b.instructions || "No additional instructions."}
+
+Apply these project settings consistently to this project's conversation.
+
+`;
+}
+
+
+/* =====================================================
+SEND MESSAGE
+===================================================== */
+
+async function sendMessage(options={}){
+
+    if(isThinking) return;
+    if(getCooldownRemaining()>0){
+        const chat=getCurrentChat();
+        if(chat){
+            chat.messages.push({role:"assistant",content:getCooldownMessage(),createdAt:Date.now()});
+            saveChats();
+            render();
+        }
+        updateCooldownUI();
+        return;
+    }
+
+    const input=document.getElementById("messageInput");
+    const text=normalizeMessageText(input.value);
+    if(!text && !selectedFile) return;
+
+    const chat=getCurrentChat();
+    if(!chat) return;
+
+    const regenerateFromExisting=options.regenerateFromExisting===true;
+    if(!regenerateFromExisting){
+        const userMessage={role:"user",content:text,createdAt:Date.now()};
+        if(selectedFile) userMessage.attachment={...selectedFile};
+        chat.messages.push(userMessage);
+    }
+
+    if(chat.title==="چت جدید" && text){
+        chat.title=text.substring(0,30);
+    }
+
+    input.value="";
+    selectedFile=null;
+    document.getElementById("fileInput").value="";
+    renderFilePreview();
+    document.querySelectorAll("[data-icon]").forEach(el=>el.innerHTML=svgIcon(el.dataset.icon));
+    const attachIcon=document.getElementById("attachIcon");
+    if(attachIcon) attachIcon.innerHTML=svgIcon("clip");
+
+    saveChats();
+    render();
+
+    stopRequested=false;
+    activeAbortController=new AbortController();
+    setThinking(true);
+
+    try{
+        const apiInput=[];
+
+        for(const msg of chat.messages){
+            if(msg.role==="assistant"){
+                apiInput.push({role:"assistant",content:[{type:"output_text",text:msg.content||""}]});
+            }else{
+                const content=[];
+                if(msg.content){content.push({type:"input_text",text:msg.content});}
+                if(msg.attachment && msg.attachment.type?.startsWith("image/")){
+                    content.push({type:"input_image",image_url:msg.attachment.data});
+                }
+                if(msg.attachment && msg.attachment.textContent){
+                    content.push({type:"input_text",text:`Attached file: ${msg.attachment.name || "file"}\n\n${msg.attachment.textContent}`});
+                }
+                apiInput.push({role:"user",content});
+            }
+        }
+
+        let instructions=`
+You are Berinzo, a helpful AI assistant.
+Answer naturally and accurately. If a text/code file is attached, read its provided contents and answer based on that actual file. Do not claim you cannot see it when its contents are included.
+Always reply in the user's selected app language: ${LANGUAGE_DATA[currentLanguage]?.name || "Persian"}.
+Follow all applicable safety requirements.
+
+MEMORY RULES:
+You have a long-term memory system. Decide silently whether the user's message contains information worth remembering.
+Automatically save durable, useful, non-sensitive facts such as stable preferences, favorite topics, recurring goals, ongoing projects, important workflow choices, and persistent instructions about how the user wants Berinzo to behave.
+Do NOT save ordinary one-off questions, temporary details, casual conversation, passwords, API keys, exact addresses, financial information, health information, sexual information, political/religious identity, or other sensitive personal data unless the user explicitly asks you to save that exact information.
+If the user explicitly says to save, remember, store, keep in memory, or a clear equivalent, save the important non-sensitive information they requested. When you decide something should be stored, output one final marker exactly like:
+[BERINZO_MEMORY|category|text]
+Choose one category from: شخصی, علایق, کار و پروژه, ترجیحات, یادداشت.
+Keep the marker short and factual. Do not mention the marker to the user; it will be removed automatically.
+If nothing should be remembered, output no marker.
+`;
+
+        // Include existing memory as context.
+        if(memories.length){
+            instructions += "\\nKNOWN MEMORY:\\n" + memories.slice(0,30).map(m=>`- [${m.category}] ${m.text}`).join("\\n");
+        }
+
+        if(chat.projectId){
+            const project=projects.find(p=>p.id===chat.projectId);
+            if(project) instructions += "\\n\\n" + buildBehaviorInstructions(project);
+        }
+
+        const response=await fetch("https://api.deepseek.com/responses",{
+            method:"POST",
+            headers:{"Content-Type":"application/json","Authorization":"Bearer "+DEEPSEEK_API_KEY},
+            body:JSON.stringify({model:BERINZO_MODEL,instructions,input:apiInput}),
+            signal:activeAbortController.signal
+        });
+
+        if(!response.ok){
+            let detail="";
+            try{
+                const errData=await response.json();
+                detail=errData?.error?.message || errData?.error?.code || "";
+            }catch{
+                try{ detail=await response.text(); }catch{}
+            }
+            const err=new Error(detail || `HTTP ${response.status}`);
+            err.status=response.status;
+            throw err;
+        }
+        const data=await response.json();
+        let answer=normalizeMessageText(extractResponseText(data) || lang().noResponse);
+
+        // Capture explicit memory markers without showing the internal marker to the user.
+        const markerRe=/\[BERINZO_MEMORY\|([^|]+)\|([\s\S]*?)\]/g;
+        let match;
+        while((match=markerRe.exec(answer))){ addMemory(match[2].trim(),match[1].trim()); }
+        answer=answer.replace(markerRe,"").trim();
+
+        const thinkingElapsed=thinkingStartedAt ? Math.max(0,Date.now()-thinkingStartedAt) : 0;
+        chat.messages.push({role:"assistant",content:answer||lang().saved,thinkingTime:thinkingElapsed,createdAt:Date.now()});
+        saveChats();
+        render();
+        renderMemoryList();
+
+    }catch(error){
+        if(error && error.name === "AbortError"){
+            saveChats();
+            render();
+        }else{
+            console.error(error);
+            if(isRateLimitError(error)){
+                startBerinzoCooldown(error);
+                chat.messages.push({role:"assistant",content:getCooldownMessage(),createdAt:Date.now(),thinkingTime:thinkingStartedAt ? Math.max(0,Date.now()-thinkingStartedAt) : 0});
+            }else{
+                const detail=String(error?.message || "").trim();
+                const safeDetail=detail && detail.length<500 ? `
+
+جزئیات: ${detail}` : "";
+                chat.messages.push({role:"assistant",content:`❌ خطا در ارتباط با هوش مصنوعی.
+
+API Key، مدل یا اتصال اینترنت را بررسی کن.${safeDetail}`,createdAt:Date.now(),thinkingTime:thinkingStartedAt ? Math.max(0,Date.now()-thinkingStartedAt) : 0});
+            }
+            saveChats();
+            render();
+        }
+    }finally{
+        activeAbortController=null;
+        setThinking(false);
+    }
+}
+
+function handleSendButton(){
+    if(isThinking){
+        stopGeneration();
+    }else{
+        sendMessage();
+    }
+}
+
+function stopGeneration(){
+    if(!isThinking) return;
+    stopRequested=true;
+    if(activeAbortController){
+        activeAbortController.abort();
+    }
+}
+
+function setThinking(state){
+    isThinking=state;
+    const sendBtn=document.getElementById("sendBtn");
+    const sendBtnIcon=document.getElementById("sendBtnIcon");
+    const input=document.getElementById("messageInput");
+    if(sendBtn){
+        sendBtn.disabled=false;
+        sendBtn.classList.toggle("stopMode",state);
+        sendBtn.setAttribute("aria-label",state ? "توقف پاسخ" : "ارسال پیام");
+    }
+    if(sendBtnIcon) sendBtnIcon.textContent=state ? "" : "➤";
+    if(input) input.disabled=state;
+
+    const attach=document.getElementById("attachButton");
+    if(attach) attach.disabled=state;
+
+    if(state){
+        thinkingStartedAt=Date.now();
+        startThinkingTimer();
+    }else{
+        stopThinkingTimer();
+    }
+    renderThinking();
+    updateCooldownUI();
+}
+
+function startThinkingTimer(){
+    stopThinkingTimer();
+    thinkingTimerInterval=setInterval(()=>renderThinking(),250);
+}
+function stopThinkingTimer(){
+    if(thinkingTimerInterval){clearInterval(thinkingTimerInterval);thinkingTimerInterval=null;}
+}
+function formatThinkingTime(){
+    const sec=Math.floor((Date.now()-thinkingStartedAt)/1000);
+    return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
+}
+function renderThinking(){
+    const old=document.getElementById("thinkingIndicator");
+    if(old) old.remove();
+    if(!isThinking) return;
+    const container=document.getElementById("messages");
+    const el=document.createElement("div");
+    el.id="thinkingIndicator";
+    el.className="thinkingWrap";
+    el.innerHTML=`<span>${escapeHTML(lang().thinkingNow)}</span><span class="thinkingDots"><i></i><i></i><i></i></span><span class="thinkingTimer">${formatThinkingTime()}</span>`;
+    container.appendChild(el);
+    requestAnimationFrame(()=>container.scrollTop=container.scrollHeight);
+}
+
+/* =====================================================
+RESPONSE
+===================================================== */
+
+function extractResponseText(
+    data
+){
+
+    if(
+        typeof data.output_text===
+        "string"
+    ){
+
+        return data.output_text;
+    }
+
+
+    let result="";
+
+
+    if(
+        Array.isArray(
+            data.output
+        )
+    ){
+
+        for(
+            const item
+            of data.output
+        ){
+
+            if(
+                !Array.isArray(
+                    item.content
+                )
+            )
+                continue;
+
+
+            for(
+                const content
+                of item.content
+            ){
+
+                if(
+                    content.type===
+                    "output_text" &&
+                    content.text
+                ){
+
+                    result +=
+                        content.text;
+                }
+            }
+        }
+    }
+
+
+    return result;
+}
+
+
+/* =====================================================
+RENDER
+===================================================== */
+
+
+function formatMessageTime(timestamp){
+    const d=new Date(Number(timestamp)||Date.now());
+    return d.toLocaleTimeString(currentLanguage||"fa-IR",{hour:"2-digit",minute:"2-digit"});
+}
+
+function getThinkingTimeForMessage(msg){
+    if(!msg) return 0;
+    const n=Number(msg.thinkingTime ?? msg.thinkingDuration);
+    return Number.isFinite(n) && n>=0 ? n : 0;
+}
+
+function formatThinkingDuration(ms){
+    ms=Math.max(0,Number(ms)||0);
+    const total=Math.round(ms/1000);
+    const min=Math.floor(total/60);
+    const sec=total%60;
+    return min>0 ? `${min} دقیقه و ${String(sec).padStart(2,"0")} ثانیه` : `${sec} ثانیه`;
+}
+
+function renderMessages(){
+    const container=document.getElementById("messages");
+    container.innerHTML="";
+    const chat=getCurrentChat();
+    if(!chat) return;
+
+    chat.messages.forEach((msg,index)=>{
+        const row=document.createElement("div");
+        row.className="message "+msg.role;
+        row.dataset.index=index;
+
+        const avatar=document.createElement("div");
+        avatar.className="avatar "+(msg.role==="user"?"user":"ai");
+        avatar.textContent=msg.role==="user"?"تو":"B";
+
+        const contentWrap=document.createElement("div");
+        contentWrap.style.maxWidth="calc(100% - 47px)";
+
+        const bubble=document.createElement("div");
+        bubble.className="bubble";
+        bubble.textContent=msg.content||"";
+
+        if(msg.attachment){
+            const att=document.createElement("div");
+            att.className="attachment";
+            att.title=lang().openDownload;
+            att.style.cursor="pointer";
+            att.onclick=(e)=>{e.stopPropagation();openAttachment(msg.attachment);};
+
+            if(msg.attachment.type?.startsWith("image/")){
+                const img=document.createElement("img");
+                img.src=msg.attachment.data;
+                img.alt=msg.attachment.name||"تصویر";
+                att.appendChild(img);
+            }else{
+                att.innerHTML=`<div style="font-size:13px;display:flex;align-items:center;gap:7px"><span class="menuIcon" data-icon="file"></span>${escapeHTML(msg.attachment.name||"فایل")}</div><div style="font-size:10px;color:var(--muted);margin-top:3px">${lang().openDownload}</div>`;
+            }
+            bubble.appendChild(att);
+        }
+
+        contentWrap.appendChild(bubble);
+        const meta=document.createElement("div");
+        meta.className="messageMeta";
+        const sentTime=document.createElement("span");
+        sentTime.className="metaTime";
+        sentTime.textContent=formatMessageTime(msg.createdAt);
+        meta.appendChild(sentTime);
+        contentWrap.appendChild(meta);
+
+        row.appendChild(avatar);
+        row.appendChild(contentWrap);
+
+        row.addEventListener("contextmenu",e=>openMessageContext(e,index));
+        let pressTimer=null;
+        row.addEventListener("pointerdown",e=>{
+            if(e.pointerType==="mouse" && e.button!==0) return;
+            pressTimer=setTimeout(()=>openMessageContext(e,index),550);
+        });
+        ["pointerup","pointerleave","pointercancel"].forEach(ev=>row.addEventListener(ev,()=>{if(pressTimer)clearTimeout(pressTimer);}));
+
+        container.appendChild(row);
+    });
+
+    if(isThinking) renderThinking();
+    requestAnimationFrame(()=>container.scrollTop=container.scrollHeight);
+}
+
+function openAttachment(att){
+    if(!att?.data) return;
+    pendingFileAction=att;
+    const modal=document.getElementById("fileActionModal");
+    const title=document.getElementById("fileActionTitle");
+    const name=document.getElementById("fileActionName");
+    const question=document.getElementById("fileActionQuestion");
+    const L=fileActionLang();
+    if(title) title.textContent=L.openFileTitle;
+    if(name) name.textContent=att.name||"file";
+    if(question) question.textContent=L.actionQuestion;
+    setActionButtonLabel("fileOpenBtn", "open", L.openFile);
+    setActionButtonLabel("fileDownloadBtn", "download", L.downloadFile);
+    setActionButtonLabel("fileCancelBtn", "close", L.cancel);
+    modal.classList.add("show");
+}
+
+function setActionButtonLabel(id, icon, text){
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.innerHTML=`<span class="uiIcon" data-icon="${icon}"></span><span>${escapeHTML(text)}</span>`;
+    refreshUIIcons();
+}
+
+function closeFileAction(){
+    const modal=document.getElementById("fileActionModal");
+    if(modal) modal.classList.remove("show");
+    pendingFileAction=null;
+}
+
+function fileActionOpen(){
+    if(!pendingFileAction?.data) return closeFileAction();
+    const att=pendingFileAction;
+    const appModal=document.getElementById("fileAppModal");
+    const appName=document.getElementById("fileAppName");
+    const L=fileActionLang();
+    if(appName) appName.textContent=att.name||"file";
+    document.getElementById("fileAppTitle").textContent=L.chooseAppTitle;
+    document.getElementById("fileAppQuestion").textContent=L.chooseAppQuestion;
+    document.getElementById("fileBrowserBtn").textContent=L.browser;
+    document.getElementById("fileChooseAppBtn").textContent=L.chooseApp;
+    document.getElementById("fileAppCancelBtn").textContent=L.cancel;
+    document.getElementById("fileActionModal").classList.remove("show");
+    appModal.classList.add("show");
+    refreshUIIcons();
+}
+
+function closeFileAppChooser(){
+    const modal=document.getElementById("fileAppModal");
+    if(modal) modal.classList.remove("show");
+    pendingFileAction=null;
+}
+
+function openFileInBrowser(){
+    const att=pendingFileAction;
+    if(!att?.data) return closeFileAppChooser();
+    const a=document.createElement("a");
+    a.href=att.data; a.target="_blank"; a.rel="noopener";
+    document.body.appendChild(a); a.click(); a.remove();
+    closeFileAppChooser();
+}
+
+async function chooseFileApp(){
+    const att=pendingFileAction;
+    if(!att?.data) return closeFileAppChooser();
+    try{
+        const blob=await (await fetch(att.data)).blob();
+        const file=new File([blob],att.name||"file",{type:att.type||blob.type||"application/octet-stream"});
+        if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
+            await navigator.share({title:att.name||"file",files:[file]});
+            closeFileAppChooser();
+            return;
+        }
+    }catch(e){}
+    // Browsers cannot enumerate installed apps. Fall back to the normal file download/share flow.
+    fileActionDownload();
+}
+
+function fileActionDownload(){
+    const att=pendingFileAction;
+    if(!att?.data) return closeFileAppAction();
+    const a=document.createElement("a");
+    a.href=att.data; a.download=att.name||"download";
+    document.body.appendChild(a); a.click(); a.remove();
+    closeFileAppChooser();
+}
+
+function closeFileAppAction(){ closeFileAction(); }
+
+async function copyMessage(index){
+    const chat=getCurrentChat(); const msg=chat?.messages[index];
+    if(!msg) return;
+    const text=String(msg.content||"");
+    if(!text) return;
+    try{
+        if(navigator.clipboard && window.isSecureContext){
+            await navigator.clipboard.writeText(text);
+            return;
+        }
+    }catch(e){}
+    try{
+        const ta=document.createElement("textarea");
+        ta.value=text;
+        ta.setAttribute("readonly","");
+        ta.style.position="fixed";
+        ta.style.opacity="0";
+        ta.style.pointerEvents="none";
+        document.body.appendChild(ta);
+        ta.focus(); ta.select(); ta.setSelectionRange(0,ta.value.length);
+        const ok=document.execCommand("copy");
+        ta.remove();
+        if(ok) return;
+    }catch(e){}
+    alert(lang().copyFailed || "کپی انجام نشد.");
+}
+
+function openMessageContext(event,index){
+    event.preventDefault();
+    contextMessageIndex=index;
+    const menu=document.getElementById("messageContextMenu");
+    const editBtn=document.getElementById("contextEditBtn");
+    const thinkingInfo=document.getElementById("contextThinkingInfo");
+    const thinkingValue=document.getElementById("contextThinkingValue");
+    const msg=getCurrentChat()?.messages[index];
+    const copyLabel=document.getElementById("contextCopyLabel");
+    const editLabel=document.getElementById("contextEditLabel");
+    if(copyLabel) copyLabel.textContent=lang().copy;
+    if(editLabel) editLabel.textContent=lang().edit;
+    editBtn.disabled=!msg || msg.role!=="user" || isThinking;
+    if(thinkingInfo){
+        thinkingInfo.style.display=(msg?.role==="assistant") ? "flex" : "none";
+        if(msg?.role==="assistant") thinkingValue.textContent=formatThinkingNumeric(getThinkingTimeForMessage(msg));
+    }
+    menu.classList.add("show");
+    const menuHeight=msg?.role==="assistant" ? 130 : 90;
+    const x=Math.max(8,Math.min(event.clientX||10,window.innerWidth-190));
+    const y=Math.max(8,Math.min(event.clientY||10,window.innerHeight-menuHeight));
+    menu.style.left=x+"px"; menu.style.top=y+"px";
+}
+function closeMessageContext(){document.getElementById("messageContextMenu").classList.remove("show");}
+function contextCopy(){if(contextMessageIndex!==null) copyMessage(contextMessageIndex);closeMessageContext();}
+function contextEdit(){if(contextMessageIndex!==null) openEditMessage(contextMessageIndex);closeMessageContext();}
+function formatThinkingNumeric(ms){
+    const sec=Math.max(0,Number(ms)||0)/1000;
+    return sec<10 ? sec.toFixed(2)+" ثانیه" : sec.toFixed(1)+" ثانیه";
+}
+
+function openEditMessage(index){
+    if(isThinking) return;
+    const chat=getCurrentChat(); const msg=chat?.messages[index];
+    if(!msg || msg.role!=="user") return;
+    editMessageIndex=index;
+    const input=document.getElementById("editMessageInput");
+    input.value=msg.content||"";
+    input.dataset.original=msg.content||"";
+    updateEditState();
+    document.getElementById("editMessageModal").classList.add("show");
+    setTimeout(()=>input.focus(),50);
+}
+function updateEditState(){
+    const input=document.getElementById("editMessageInput");
+    const btn=document.getElementById("saveEditBtn");
+    btn.disabled=!input.value.trim() || input.value.trim()===String(input.dataset.original||"").trim() || isThinking;
+}
+function closeEditMessage(){document.getElementById("editMessageModal").classList.remove("show");editMessageIndex=null;}
+async function saveEditedMessage(){
+    if(editMessageIndex===null || isThinking) return;
+
+    const index=editMessageIndex;
+    const chat=getCurrentChat();
+    const editInput=document.getElementById("editMessageInput");
+    const composer=document.getElementById("messageInput");
+    const newText=normalizeMessageText(editInput?.value || "");
+    const old=chat?.messages[index]?.content || "";
+
+    if(!chat || !chat.messages[index] || chat.messages[index].role!=="user") return;
+    if(!newText || newText===old.trim()) return;
+    if(getCooldownRemaining()>0) return;
+
+    // Update the existing message and remove the old assistant branch.
+    chat.messages[index].content=newText;
+    chat.messages.splice(index+1);
+
+    document.getElementById("editMessageModal").classList.remove("show");
+    editMessageIndex=null;
+
+    saveChats();
+    render();
+
+    // sendMessage() checks the composer before it looks at regenerateFromExisting.
+    // Put the edited text in the composer temporarily so regeneration actually runs,
+    // while regenerateFromExisting prevents creation of a duplicate user message.
+    if(composer){
+        composer.value=newText;
+        composer.dispatchEvent(new Event("input",{bubbles:true}));
+    }
+
+    await sendMessage({regenerateFromExisting:true});
+}
+
+/* =====================================================
+MAIN RENDER
+===================================================== */
+
+function refreshUIIcons(){
+    document.querySelectorAll("[data-icon]").forEach(el=>{
+        const n=el.dataset.icon;
+        if(n) el.innerHTML=svgIcon(n);
+    });
+    const a=document.getElementById("attachIcon");
+    if(a) a.innerHTML=svgIcon("clip");
+}
+
+function render(){
+
+    if(!chats.length){
+
+        createDefaultChat();
+    }
+
+
+    if(
+        !currentChatId ||
+        !getCurrentChat()
+    ){
+
+        currentChatId=
+            chats[0].id;
+    }
+
+
+    const chat =
+        getCurrentChat();
+
+
+    document
+        .getElementById(
+            "chatName"
+        )
+        .textContent =
+            chat
+            ? chat.title
+            : "Berinzo";
+
+
+    renderChatList();
+
+    renderMessages();
+
+    renderProjects();
+}
+
+
+/* =====================================================
+MOBILE MENU
+===================================================== */
+
+function toggleMenu(){
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+    const overlay =
+        document.getElementById(
+            "overlay"
+        );
+
+
+    const isOpen =
+        sidebar.classList.contains(
+            "open"
+        );
+
+
+    if(isOpen){
+
+        closeMenu();
+
+    }else{
+
+        sidebar.classList.add(
+            "open"
+        );
+
+        overlay.classList.add(
+            "show"
+        );
+    }
+}
+
+
+function closeMenu(){
+
+    document
+        .getElementById(
+            "sidebar"
+        )
+        .classList.remove(
+            "open"
+        );
+
+
+    document
+        .getElementById(
+            "overlay"
+        )
+        .classList.remove(
+            "show"
+        );
+}
+
+
+/* =====================================================
+ENTER
+===================================================== */
+
+
+function normalizeMessageText(value){
+    let text = String(value ?? "").replace(/[\r\u2028\u2029]/g, "\n").trim();
+    if(!text) return "";
+
+    // Some mobile keyboards can occasionally commit each Persian character
+    // as a separate line. Join only when the whole message clearly matches
+    // that accidental pattern, while preserving real multiline messages.
+    const lines = text.split("\n").map(x=>x.trim()).filter(Boolean);
+    if(lines.length >= 2 && lines.every(x => Array.from(x).length === 1)){
+        return lines.join("");
+    }
+    return text;
+}
+
+function svgIcon(name){
+    const icons = {
+        copy:`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>`,
+        edit:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"></path><path d="m13.5 6.5 4 4"></path></svg>`,
+        brain:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3v1a3 3 0 0 0-2 5 3 3 0 0 0 3 4h2V4Z"></path><path d="M15 4a3 3 0 0 1 3 3v1a3 3 0 0 1 2 5 3 3 0 0 1-3 4h-2V4Z"></path><path d="M9 8h2v4H9m6-4h-2v4h2m-6 4h2m2 0h2"></path></svg>`,
+        clip:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 12 7.5-7.5a3 3 0 0 1 4.2 4.2L10 18.4A4 4 0 1 1 4.3 12.7l9-9"></path></svg>`,
+        image:`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"></rect><circle cx="8.5" cy="9" r="1.5"></circle><path d="m5 17 5-5 3 3 2-2 4 4"></path></svg>`,
+        video:`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"></rect><path d="m16 10 5-3v10l-5-3"></path></svg>`,
+        audio:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="16" cy="16" r="3"></circle></svg>`,
+        clock:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7v5l3 2"></path></svg>`,
+        globe:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M3.5 12h17M12 3.5c2.2 2.4 3.2 5.2 3.2 8.5S14.2 18.1 12 20.5M12 3.5C9.8 5.9 8.8 8.7 8.8 12s1 6.1 3.2 8.5"></path></svg>`,
+        open:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6"></path><path d="M20 4 11 13"></path><path d="M19 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6"></path></svg>`,
+        download:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>`,
+        share:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2"></circle><circle cx="6" cy="12" r="2"></circle><circle cx="18" cy="19" r="2"></circle><path d="m8 11 8-5"></path><path d="m8 13 8 5"></path></svg>`,
+        close:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12"></path><path d="m18 6-12 12"></path></svg>`,
+        file:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v5h5"></path></svg>`
+    };
+    return icons[name] || "";
+}
+
+function repairInputLineBreaks(input){
+    if(!input) return;
+    const value=input.value;
+    const normalized=normalizeMessageText(value);
+    if(normalized && normalized!==value && !isThinking){
+        const start=input.selectionStart ?? value.length;
+        const before=value.slice(0,start);
+        const repairedBefore=normalizeMessageText(before);
+        input.value=normalized;
+        const newPos=Math.min(repairedBefore.length, normalized.length);
+        try{ input.setSelectionRange(newPos,newPos); }catch{}
+    }
+}
+
+function handleEnter(event){
+    if(event.isComposing) return;
+    if(event.key==="Enter" && !event.shiftKey){
+        event.preventDefault();
+        repairInputLineBreaks(document.getElementById("messageInput"));
+        if(!isThinking) sendMessage();
+    }
+}
+
+
+/* =====================================================
+FILES
+===================================================== */
+
+function toggleAttach(){
+
+    document
+        .getElementById(
+            "attachMenu"
+        )
+        .classList.toggle(
+            "show"
+        );
+}
+
+
+function chooseFile(type){
+
+    const input =
+        document.getElementById(
+            "fileInput"
+        );
+
+
+    input.accept=
+        type;
+
+
+    input.click();
+
+
+    document
+        .getElementById(
+            "attachMenu"
+        )
+        .classList.remove(
+            "show"
+        );
+}
+
+
+function isReadableTextFile(file){
+    const name=(file?.name||"").toLowerCase();
+    const type=(file?.type||"").toLowerCase();
+    const ext=name.includes(".") ? name.split(".").pop() : "";
+    const textExts=["html","htm","css","js","mjs","cjs","ts","tsx","jsx","json","txt","md","markdown","xml","svg","csv","yaml","yml","ini","cfg","conf","log","sql","py","java","c","cpp","h","hpp","cs","php","rb","go","rs","swift","kt","kts","sh","bat","ps1"];
+    return type.startsWith("text/") || ["application/json","application/javascript","application/xml","image/svg+xml"].includes(type) || textExts.includes(ext);
+}
+
+function handleFile(event){
+    const file=event.target.files[0];
+    if(!file) return;
+
+    const base={name:file.name,type:file.type||"application/octet-stream",size:file.size};
+    const dataReader=new FileReader();
+    dataReader.onload=()=>{
+        selectedFile={...base,data:dataReader.result};
+        if(isReadableTextFile(file)){
+            const textReader=new FileReader();
+            textReader.onload=()=>{
+                selectedFile.textContent=String(textReader.result||"").slice(0,2000000);
+                renderFilePreview();
+            };
+            textReader.readAsText(file);
+        }else{
+            renderFilePreview();
+        }
+    };
+    dataReader.readAsDataURL(file);
+}
+
+function renderFilePreview(){
+    const box=document.getElementById("filePreview");
+    if(!box) return;
+    if(!selectedFile){box.classList.remove("show");box.innerHTML="";return;}
+    const isImage=selectedFile.type?.startsWith("image/");
+    box.classList.add("show");
+    box.innerHTML=`${isImage?`<img class="filePreviewThumb" src="${selectedFile.data}" alt="">`:`<div class="filePreviewThumb" style="display:flex;align-items:center;justify-content:center;font-size:22px">📎</div>`}<div class="filePreviewInfo"><div class="filePreviewName">${escapeHTML(selectedFile.name)}</div><div class="filePreviewMeta">${formatFileSize(selectedFile.size)} • ${lang().ready}</div></div><button class="fileRemoveBtn" title="حذف فایل" onclick="removeSelectedFile()">×</button>`;
+}
+function removeSelectedFile(){
+    selectedFile=null;
+    document.getElementById("fileInput").value="";
+    renderFilePreview();
+}
+function formatFileSize(bytes){
+    if(!bytes) return "فایل";
+    if(bytes<1024) return bytes+" B";
+    if(bytes<1024*1024) return (bytes/1024).toFixed(1)+" KB";
+    return (bytes/(1024*1024)).toFixed(1)+" MB";
+}
+
+
+/* =====================================================
+ESCAPE
+===================================================== */
+
+function escapeHTML(text){
+
+    return String(text)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+}
+
+
+/* =====================================================
+CLICK OUTSIDE ATTACH
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        const menu =
+            document.getElementById(
+                "attachMenu"
+            );
+
+
+        const button =
+            document.getElementById(
+                "attachButton"
+            );
+
+
+        if(
+            menu.classList.contains(
+                "show"
+            ) &&
+            !menu.contains(
+                event.target
+            ) &&
+            !button.contains(
+                event.target
+            )
+        ){
+
+            menu.classList.remove(
+                "show"
+            );
+        }
+
+    }
+);
+
+
+document.addEventListener("click",function(event){
+    const menu=document.getElementById("messageContextMenu");
+    if(menu && menu.classList.contains("show") && !menu.contains(event.target)) closeMessageContext();
+});
+
+window.addEventListener("resize",closeMessageContext);
+
+/* =====================================================
+INIT
+===================================================== */
+
+renderFilePreview();
+renderMemoryList();
+renderLanguageList();
+render();
+applyLanguage();
+
+const messageInput=document.getElementById("messageInput");
+if(messageInput){
+    messageInput.addEventListener("input",()=>{
+        // Only repair the very specific accidental pattern:
+        // one non-space character per line.
+        const value=messageInput.value;
+        const lines=value.replace(/\\r/g,"").split("\\n").filter(x=>x.trim()!=="");
+        if(lines.length>=2 && lines.every(x=>Array.from(x.trim()).length===1)){
+            const pos=messageInput.selectionStart ?? value.length;
+            const before=value.slice(0,pos);
+            const repairedBefore=before.replace(/\\r/g,"").split("\\n").filter(x=>x.trim()!=="").join("");
+            messageInput.value=lines.join("");
+            try{messageInput.setSelectionRange(Math.min(repairedBefore.length,messageInput.value.length),Math.min(repairedBefore.length,messageInput.value.length));}catch{}
+        }
+    });
+}
+
+</script>
+
+
+<script id="berinzo-edit-resend-fix">
+(()=>{
+  let lastEditIndex=null;
+  const findIndex=()=>{
+    const m=window.__berinzoEditingIndex;
+    return Number.isInteger(m)?m:null;
+  };
+  window.berinzoEditAndResend=async function(index,newText){
+    try{
+      if(typeof getCurrentChat!=="function") return;
+      const chat=getCurrentChat();
+      if(!chat || !chat.messages || !chat.messages[index]) return;
+      const text=String(newText??"").trim();
+      if(!text) return;
+      chat.messages[index].content=text;
+      chat.messages[index].createdAt=Date.now();
+      // Remove everything after the edited user message so the AI regenerates from it.
+      chat.messages=chat.messages.slice(0,index+1);
+      if(typeof saveChats==="function") saveChats();
+      if(typeof render==="function") render();
+      const input=document.getElementById("messageInput");
+      if(input) input.value="";
+      if(typeof sendMessage==="function"){
+        // sendMessage reads the composer; put the edited text there, then send.
+        if(input){
+          input.value=text;
+          input.dispatchEvent(new Event("input",{bubbles:true}));
+        }
+        await sendMessage();
+      }
+    }catch(e){
+      console.error("Berinzo edit resend error:",e);
+      if(window.berinzoUltraToast) window.berinzoUltraToast("ویرایش پیام انجام نشد.");
+    }
+  };
+})();
+</script>
+
+<script id="berinzo-edit-workflow-v3">
+(()=>{
+  function getChatSafe(){
+    return typeof getCurrentChat==="function" ? getCurrentChat() : null;
+  }
+  async function regenerateFromEdited(index,text){
+    const chat=getChatSafe();
+    if(!chat || !chat.messages[index]) return false;
+    text=String(text||"").trim();
+    if(!text) return false;
+
+    // Keep the edited user message and discard the old assistant/follow-up history.
+    chat.messages[index].content=text;
+    chat.messages[index].createdAt=Date.now();
+    chat.messages=chat.messages.slice(0,index+1);
+
+    if(typeof saveChats==="function") saveChats();
+    if(typeof render==="function") render();
+
+    // The existing sendMessage() creates a NEW user message from the composer.
+    // We therefore call the internal request path below by temporarily using a marker,
+    // while removing the duplicate message immediately before the API call.
+    const input=document.getElementById("messageInput");
+    if(!input || typeof sendMessage!=="function") return false;
+
+    input.value=text;
+    input.dispatchEvent(new Event("input",{bubbles:true}));
+
+    const before=chat.messages.length;
+    await sendMessage();
+
+    // sendMessage added the same text as a second user message. Collapse that duplicate,
+    // preserving the newly generated assistant response.
+    const after=chat.messages;
+    if(after.length>before && after[before] && after[before].role==="user" &&
+       String(after[before].content||"").trim()===text){
+      after.splice(index,1);
+      // If the splice changed the array while an assistant response exists, save/render again.
+      if(typeof saveChats==="function") saveChats();
+      if(typeof render==="function") render();
+    }
+    return true;
+  }
+
+  // Public function for the context-menu edit UI.
+  window.berinzoEditAndResend=regenerateFromEdited;
+
+  // Capture the existing edit modal's final action when it calls the common edit handler.
+  // This wrapper only activates if the original function exists.
+  const originalEdit=window.editMessage;
+  if(typeof originalEdit==="function"){
+    window.editMessage=async function(index,text){
+      return regenerateFromEdited(index,text);
+    };
+  }
+})();
+</script>
+</body>
+</html>lue.length),Math.min(repairedBefore.length,messageInput.value.length));}catch{}
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>
+<!-- Berinzo AI ULTRA v1 enhancement layer: visual polish, motion, responsive effects, reduced-motion support. -->
