@@ -17,8 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 24
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -36,7 +35,7 @@ jobs:
           npm install @capacitor/core@7.4.4 @capacitor/android@7.4.4
           npm install -D @capacitor/cli@7.4.4
 
-          npx cap init "My HTML App" "com.example.myhtmlapp" --web-dir=www
+          npx cap init "Berinzo AI" "com.berinzo.ai" --web-dir=www
           npx cap add android
 
       - name: Build APK
@@ -48,5 +47,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: My-HTML-App-APK
+          name: Berinzo-AI-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
